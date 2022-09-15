@@ -41,23 +41,23 @@ def VLProperties(q,T,d):
     # Surface tension
     surfTension = 0.07863*((1-T/T_c)**1.254)
 
-    if q == 0
+    if q == 0:
         return Ar
-    elif q == 1
+    elif q == 1:
         return entropy
-    elif q == 2
+    elif q == 2:
         return enthalpy
-    elif q == 3
+    elif q == 3:
         return cp
-    elif q == 4
+    elif q == 4:
         return cv
-    elif q == 5
+    elif q == 5:
         return cubicExpCoefficient
-    elif q == 6
+    elif q == 6:
         return ThermalConductivity(tau,d_r)
-    elif q == 7
+    elif q == 7:
         return Viscosity(T,d)
-    elif q == 8
+    elif q == 8:
         return surfTension
 
 def SolidProperties(q,T,P):
@@ -123,19 +123,19 @@ def SolidProperties(q,T,P):
     # Cubic expansion coefficient computed using molar volume and its derivative with respect to temperature
     cubicExpCoefficient = (R/P_0)*(E1cec + g_9*(2*g_0k*theta + g_1k)*(6/7)*((Pi + g_10)**(-1/7)))/mVolume
 
-    if q == 0
+    if q == 0:
         return g
-    elif q == 1
+    elif q == 1:
         return Mco2/mVolume
-    elif q == 2
+    elif q == 2:
         return entropy
-    elif q == 3
+    elif q == 3:
         return enthalpy
-    elif q == 4
+    elif q == 4:
         return cp
-    elif q == 5
+    elif q == 5:
         return cv
-    elif q == 6
+    elif q == 6:
         return cubicExpCoefficient
 
 def ThermalConductivity(tau,d_r):
