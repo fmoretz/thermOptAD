@@ -249,7 +249,7 @@ def d2phi_r(d_r,tau):
         psi2    = 2*C4[h]*psi*(2*C4[h]*diff**2 - 1)
         sum4    = sum4 + n4[h]*((delta**bi4[h])*(2*psi1 + d_r*psi2)+2*deltab*(psi + d_r*psi1)+d_r*psi*deltab2)
 
-      return (sum1 + sum2 + sum3 + sum4)
+    return (sum1 + sum2 + sum3 + sum4)
 
 def dphir_rt(tau,d_r):
     """
