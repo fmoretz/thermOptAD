@@ -30,8 +30,8 @@ print("The algorithms are reading the data file")
 path = 'PureCO2.xlsx'
 data = pd.read_excel(path, sheet_name="Dati", index_col=0)
 # Temperature [K] and pressure [Pa] vectors
-T_i = data['T[K]'].to_numpy()
-P_i = data['P[Pa]'].to_numpy()
+T_i = data['T [K]'].to_numpy()
+P_i = data['P [Pa]'].to_numpy()
 # Reading record number
 imax = len(data.axes[0])
 
