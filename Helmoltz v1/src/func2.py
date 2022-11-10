@@ -850,7 +850,6 @@ def fug_mix_helmoltz(specie, T, P):
     T_c_vec = [T_c[k] for k in species_vector]
     P_c_vec = [P_c[k] / 101325 for k in species_vector]
 
-    # TODO Species assignment
     z = z[specie]
     w = w[specie]
     T_c = T_c[specie]
@@ -888,3 +887,36 @@ def fug_mix_helmoltz(specie, T, P):
     phi_mix_cubic = fug_mix_PR(Z0, w, T_c, P_c, P, T, mix_whole['a'], mix_whole['b'])  # T[K], P[atm]
 
     return phi_mix[0]
+
+def dPsatdT(Psat, T):
+    """
+    Evaluate the rate of change of the vapour pressure 
+    against the temperature: dPast/dT
+    Psat: array
+    T: array
+    return: rate = incremental ratio of Psat and T
+    """
+    rate = np.empty(len(Psat))
+    for i in range(1, len(Psat)):
+        rate[i] = (Psat[i-1] - Psat[i])/(T[i-1] - T[i])
+    return rate
+
+def volat_y(y):
+    """
+    Evaluate the volatility of a species 
+    in a binary mixture from its composition
+    y: array of composition in gas phase
+    return: volatility of that species
+    """
+    return y/(1-y)
+
+def volat_Psat(Psat_A, Psat_B):
+    """
+    Evaluate the volatility of a species 
+    in a binary mixture from its vapour pressure
+    against the vapour pressure of a referenced one
+    Psat_A: vapour pressure of interested species
+    Psat_B: vapour pressure of referenced species
+    return: volatility of that species
+    """
+    return Psat_A/Psat_B
