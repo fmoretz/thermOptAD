@@ -3,7 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from func import Antoine
 from prop import Ant
-from pprint import pprint as pp
+
 from sklearn.preprocessing import MinMaxScaler
 
 plt.style.use(['science', 'no-latex'])

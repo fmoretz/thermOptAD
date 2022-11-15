@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from sympy import sympify
 from func2 import *
-import os
 import numpy as np
 from initial import *
-
+import os
+from pathlib import Path
 
 def model(Temperature, Pressure, species):
     plt.figure(num=None, dpi=80, facecolor='w', edgecolor='k')
@@ -136,6 +136,7 @@ def model(Temperature, Pressure, species):
             Vap_TP[j][i] = V
             Liq_TP[j][i] = L
 
+            
             # Saving thermodynamic properties in a txt file
             P_str = str(P / 101325)
             P_str = P_str.replace('.', '')
@@ -143,8 +144,14 @@ def model(Temperature, Pressure, species):
             filename = f'results_{int(T - 273)}C_' + P_str + 'atm'
             # cd = os.chdir('')
             path = '/output/thermo parameters/'
-
-            file = path + filename + '.txt'
+            
+            filename = path + filename + '.txt'
+            
+            # retrieve file path
+            
+            # `cwd`: current directory
+            cwd = Path.cwd()
+            file = str(cwd) + filename
             
             with open(file, 'w') as res:
                 res.write('# ======= Thermodynamic parameters for species and conditions ======= #')
@@ -182,9 +189,11 @@ def model(Temperature, Pressure, species):
 
             filename = f'xy_{int(T - 273)}C_' + P_str + 'atm'
             # cd = os.chdir('')
-            path = '/output/compositions/'
+            path = '/output/compositions/txt/'
 
-            file = path + filename + '.txt'
+            filename = path + filename + '.txt'
+            
+            file = str(cwd) + filename
 
             with open(file, 'w') as f:
                 f.write("xCH4\txCO2\txH2S\txH2O\tyCH4\tyCO2\tyH2S\tyH2O\n")
@@ -236,7 +245,11 @@ def model(Temperature, Pressure, species):
     axes.legend(loc='upper left', fontsize=12)
 
     path_for_figures = '/output/VLE figures/'
-    filename = path_for_figures + 'alpha_TP_plot.svg'
+
+    file = 'alpha_TP_plot.svg'
+
+    filename = str(cwd) + path_for_figures + file
+
     fig.savefig(filename, dpi=800)
 
     # V-L plot
@@ -296,8 +309,11 @@ def model(Temperature, Pressure, species):
     axes2[1].grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
     axes2[1].legend(loc='upper left', fontsize=12)
 
-    path_for_figures = '/output/VLE figures/'
-    filename = path_for_figures + 'V_L_TP_plot.svg'
+    file = 'V_L_TP_plot.svg'
+
+    filename = str(cwd) + path_for_figures + file
+    
+    
     fig2.savefig(filename, dpi=800)
 
     # x-y plot
@@ -520,8 +536,11 @@ def model(Temperature, Pressure, species):
     # axes3[3,1].legend(loc='upper left', fontsize=12) 
     axes3[3, 1].legend(loc='upper center', bbox_to_anchor=(-0.14, -0.17), ncol=len(Pressure), fontsize=12)
 
-    path_for_figures = '/output/VLE figures/'
-    filename = path_for_figures + 'x_y_TP_plot.svg'
+   
+    file = 'x_y_TP_plot.svg'
+
+    filename = str(cwd) + path_for_figures + file
+    
     fig3.savefig(filename, dpi=800)
 
     return print('\nsimulation successfull!')
