@@ -1192,48 +1192,4 @@ def mole_day(lks, hk: str, Temp_degC, Pres_atm, Height, Diameter):
         hspace=0.2,
         wspace=0.2
     )
-
-
-    plt.figure(dpi=dpi)
-    plt.subplot(1,3,1)
-    filename = 'scaled (min-max) molar flux [mol/d]'
-    plt.plot(T, scaler.fit_transform((n_03atm[A[0]]/np.max(n_03atm[A[0]])).reshape(-1,1)) ,marker='o', linewidth=lw, markersize=ms, label='P: $0.3\,atm$')
-    plt.plot(T, scaler.fit_transform((n_05atm[A[0]]/np.max(n_05atm[A[0]])).reshape(-1,1)) ,marker='^', linewidth=lw, markersize=ms, label='P: $0.5\,atm$')
-    plt.plot(T, scaler.fit_transform((n_10atm[A[0]]/np.max(n_10atm[A[0]])).reshape(-1,1)) ,marker='s', linewidth=lw, markersize=ms, label='P: $1.0\,atm$')
-    plt.plot(T, scaler.fit_transform((n_15atm[A[0]]/np.max(n_15atm[A[0]])).reshape(-1,1)) ,marker='D', linewidth=lw, markersize=ms, label='P: $1.5\,atm$')
-    plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
-    plt.xlabel('temperature [°C]'); plt.ylabel(filename)
-    plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-    plt.title('CH$_4$')
-
-    plt.subplot(1,3,2)
-    plt.plot(T, scaler.fit_transform((n_03atm[A[1]]/np.max(n_03atm[A[1]])).reshape(-1,1)),marker='o', linewidth=lw, markersize=ms, label='P: $0.3\,atm$')
-    plt.plot(T, scaler.fit_transform((n_05atm[A[1]]/np.max(n_05atm[A[1]])).reshape(-1,1)),marker='^', linewidth=lw, markersize=ms, label='P: $0.5\,atm$')
-    plt.plot(T, scaler.fit_transform((n_10atm[A[1]]/np.max(n_10atm[A[1]])).reshape(-1,1)),marker='s', linewidth=lw, markersize=ms, label='P: $1.0\,atm$')
-    plt.plot(T, scaler.fit_transform((n_15atm[A[1]]/np.max(n_15atm[A[1]])).reshape(-1,1)),marker='D', linewidth=lw, markersize=ms, label='P: $1.5\,atm$')
-    plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
-    plt.xlabel('temperature [°C]'); 
-    plt.title('CO$_2$')
-    plt.legend(loc='lower center', ncol=4, bbox_to_anchor=(0.5, -0.3))
-    plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-    plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-
-    plt.subplot(1,3,3)
-    plt.plot(T, scaler.fit_transform((n_03atm[A[2]]/np.max(n_03atm[A[2]])).reshape(-1,1)),marker='o', linewidth=lw, markersize=ms, label='P: $0.3\,atm$')
-    plt.plot(T, scaler.fit_transform((n_05atm[A[2]]/np.max(n_05atm[A[2]])).reshape(-1,1)),marker='^', linewidth=lw, markersize=ms, label='P: $0.5\,atm$')
-    plt.plot(T, scaler.fit_transform((n_10atm[A[2]]/np.max(n_10atm[A[2]])).reshape(-1,1)),marker='s', linewidth=lw, markersize=ms, label='P: $1.0\,atm$')
-    plt.plot(T, scaler.fit_transform((n_15atm[A[2]]/np.max(n_15atm[A[2]])).reshape(-1,1)),marker='D', linewidth=lw, markersize=ms, label='P: $1.5\,atm$')
-    plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
-    plt.title('H$_2$S')
-    plt.xlabel('temperature [°C]')
-    plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-
-    plt.subplots_adjust(
-        top=0.88,
-        bottom=0.445,
-        left=0.115,
-        right=0.9,
-        hspace=0.2,
-        wspace=0.2
-    )
     plt.show()

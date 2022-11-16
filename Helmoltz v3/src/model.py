@@ -15,7 +15,7 @@ def model(Temperature, Pressure, species):
     formatter.set_scientific(True)
     formatter.set_powerlimits((-1, 1))
     formatter.set_useOffset(0)
-
+    plt.style.use(['science','no-latex'])
     alpha0 = z['CH4'] + z['CO2'] + z['H2S']
 
     alpha_TP = np.empty(shape=(len(Pressure), len(Temperature)))
