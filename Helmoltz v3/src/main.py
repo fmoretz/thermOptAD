@@ -24,8 +24,10 @@ mole_day(
     Temp_degC = Temperature, 
     Pres_atm  = Pressure,
     Height   = L, 
-    Diameter = d
+    Diameter = d,
+    showbool=False
     )
 t2 = time.time()
 
-print(f'time for execution: {t2-t1} seconds')
+print('\nsimulation successfull!')
+print(f'time for execution: {(t2-t1):>2f} seconds')

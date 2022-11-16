@@ -943,7 +943,7 @@ def water_viscosity(T_K: float):
     C = 140 # K
     return A * 10**(B/(T_K - C))
  
-def mole_day(lks, hk: str, Temp_degC, Pres_atm, Height, Diameter):
+def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool=False):
 
     dpi = 180
 
@@ -1192,4 +1192,9 @@ def mole_day(lks, hk: str, Temp_degC, Pres_atm, Height, Diameter):
         hspace=0.2,
         wspace=0.2
     )
-    plt.show()
+    
+    if showbool == True: plt.show() 
+    else: pass
+    
+    return [n_03atm, n_04atm, n_05atm, n_07atm, n_10atm, n_12atm, n_15atm, n_16atm]
+    

@@ -1,6 +1,4 @@
-import matplotlib
 import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 from sympy import sympify
 from func2 import *
 import numpy as np
@@ -8,13 +6,6 @@ from initial import *
 from pathlib import Path
 
 def model(Temperature, Pressure, species):
-    plt.figure(num=None, dpi=80, facecolor='w', edgecolor='k')
-    matplotlib.rcParams.update({'font.size': 14, 'font.family': 'STIXGeneral', 'mathtext.fontset': 'stix'})
-    matplotlib.rcParams['font.sans-serif'] = "Arial"
-    formatter = ticker.ScalarFormatter(useMathText=True)
-    formatter.set_scientific(True)
-    formatter.set_powerlimits((-1, 1))
-    formatter.set_useOffset(0)
     plt.style.use(['science','no-latex'])
     alpha0 = z['CH4'] + z['CO2'] + z['H2S']
 
@@ -196,7 +187,8 @@ def model(Temperature, Pressure, species):
 
             with open(file, 'w') as f:
                 f.write("xCH4\txCO2\txH2S\txH2O\tyCH4\tyCO2\tyH2S\tyH2O\n")
-                f.write(f"{x_CH4[j][i]}\t{x_CO2[j][i]}\t{x_H2S[j][i]}\t{x_H2O[j][i]}\t{y_CH4[j][i]}\t{y_CO2[j][i]}\t{y_H2S[j][i]}\t{y_H2O[j][i]}\n")
+                f.write(f"{x_CH4[j][i]}\t{x_CO2[j][i]}\t{x_H2S[j][i]}\t{x_H2O[j][i]}\
+                    \t{y_CH4[j][i]}\t{y_CO2[j][i]}\t{y_H2S[j][i]}\t{y_H2O[j][i]}\n")
             
             if j == 7:
                 j = 0
@@ -215,330 +207,232 @@ def model(Temperature, Pressure, species):
         'P = ' + str(Pressure[7]) + ' atm'
     ]
 
+    # visualization settings
+    tick_num = 10
+    dpi = 150
+    x_lim_min = min(Temperature)
+    x_lim_max = max(Temperature)
+    Temp_label = r"$\mathrm{T\,[°C]}$"
+    line_thickness = 1
+    
     # alpha plot
-    fig, axes = plt.subplots(1, 1, figsize=(10, 10))
-
-    axes.plot(Temperature, alpha_TP[0], 'k', linewidth=2, label=labels[0])
-    axes.plot(Temperature, alpha_TP[1], 'b', linewidth=2, label=labels[1])
-    axes.plot(Temperature, alpha_TP[2], 'c', linewidth=2, label=labels[2])
-    axes.plot(Temperature, alpha_TP[3], 'm', linewidth=2, label=labels[3])
-    axes.plot(Temperature, alpha_TP[4], 'r', linewidth=2, label=labels[4])
-    axes.plot(Temperature, alpha_TP[5], 'orange', linewidth=2, label=labels[5])
-    axes.plot(Temperature, alpha_TP[6], 'brown', linewidth=2, label=labels[6])
-    axes.plot(Temperature, alpha_TP[7], 'lime', linewidth=2, label=labels[7])
-    axes.yaxis.set_major_formatter(formatter)
-    axes.set_xlabel(r"$T\,[\mathrm{°C}]$", fontsize=15)
-    axes.set_ylabel(r"$\alpha\,[\mathrm{--}]$", fontsize=15)
-
-    lim_min = min(Temperature)
-    lim_max = max(Temperature)
-    axes.set_xlim(lim_min, lim_max)
-    axes.xaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    lim_min = min(alpha_TP[7]) * 0 + 0.008
-    lim_max = 0.02
-    axes.set_ylim(lim_min, lim_max)
-    axes.yaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    axes.grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
-    axes.legend(loc='upper left', fontsize=12)
-
+    fig, axes = plt.subplots(1, 1, dpi=dpi)
+    axes.plot(Temperature, alpha_TP[0], 'k', linewidth=line_thickness, label=labels[0])
+    axes.plot(Temperature, alpha_TP[1], 'b', linewidth=line_thickness, label=labels[1])
+    axes.plot(Temperature, alpha_TP[2], 'c', linewidth=line_thickness, label=labels[2])
+    axes.plot(Temperature, alpha_TP[3], 'm', linewidth=line_thickness, label=labels[3])
+    axes.plot(Temperature, alpha_TP[4], 'r', linewidth=line_thickness, label=labels[4])
+    axes.plot(Temperature, alpha_TP[5], 'orange', linewidth=line_thickness, label=labels[5])
+    axes.plot(Temperature, alpha_TP[6], 'brown', linewidth=line_thickness, label=labels[6])
+    axes.plot(Temperature, alpha_TP[7], 'lime', linewidth=line_thickness, label=labels[7])
+    axes.set_xlabel(Temp_label)
+    axes.set_ylabel(r"$\mathrm{\alpha\,[--]}$")
+    axes.set_xlim(x_lim_min, x_lim_max)
+    axes.set_ylim(0.003, 0.02)
+    axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+    
     path_for_figures = '/output/VLE figures/'
-
     file = 'alpha_TP_plot.svg'
-
     filename = str(cwd) + path_for_figures + file
-
-    fig.savefig(filename, dpi=800)
+    fig.savefig(filename, dpi=dpi)
 
     # V-L plot
-    fig2, axes2 = plt.subplots(1, 2, figsize=(20, 10))
-
-    axes2[0].plot(Temperature, Vap_TP[0], 'k', linewidth=2, label=labels[0])
-    axes2[0].plot(Temperature, Vap_TP[1], 'b', linewidth=2, label=labels[1])
-    axes2[0].plot(Temperature, Vap_TP[2], 'c', linewidth=2, label=labels[2])
-    axes2[0].plot(Temperature, Vap_TP[3], 'm', linewidth=2, label=labels[3])
-    axes2[0].plot(Temperature, Vap_TP[4], 'r', linewidth=2, label=labels[4])
-    axes2[0].plot(Temperature, Vap_TP[5], 'orange', linewidth=2, label=labels[5])
-    axes2[0].plot(Temperature, Vap_TP[6], 'brown', linewidth=2, label=labels[6])
-    axes2[0].plot(Temperature, Vap_TP[7], 'lime', linewidth=2, label=labels[7])
-
-    axes2[0].set_xlabel(r"$T\,[\mathrm{°C}]$", fontsize=15)
-    axes2[0].set_ylabel(r"$Vapour$ $flow\,[\mathrm{kmol/d}]$", fontsize=15)
-
-    # change by hand every time
-    lim_min = min(Temperature)
-    lim_max = max(Temperature)
-    axes2[0].set_xlim(lim_min, lim_max)
-    axes2[0].xaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    # change by hand every time
-    lim_min = min(Vap_TP[7]) / 1.02
-    lim_max = max(Vap_TP[0])
-    axes2[0].set_ylim(lim_min, lim_max)
-    axes2[0].yaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    axes2[0].grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
-    axes2[0].legend(loc='upper left', fontsize=12)
-
-    axes2[1].plot(Temperature, Liq_TP[0], 'k', linewidth=2, label=labels[0])
-    axes2[1].plot(Temperature, Liq_TP[1], 'b', linewidth=2, label=labels[1])
-    axes2[1].plot(Temperature, Liq_TP[2], 'c', linewidth=2, label=labels[2])
-    axes2[1].plot(Temperature, Liq_TP[3], 'm', linewidth=2, label=labels[3])
-    axes2[1].plot(Temperature, Liq_TP[4], 'r', linewidth=2, label=labels[4])
-    axes2[1].plot(Temperature, Liq_TP[5], 'orange', linewidth=2, label=labels[5])
-    axes2[1].plot(Temperature, Liq_TP[6], 'brown', linewidth=2, label=labels[6])
-    axes2[1].plot(Temperature, Liq_TP[7], 'lime', linewidth=2, label=labels[7])
-
-    axes2[1].set_xlabel(r"$T\,[\mathrm{°C}]$", fontsize=15)
-    axes2[1].set_ylabel(r"$Liquid$ $flow\,[\mathrm{kmol/d}]$", fontsize=15)
-
-    # change by hand every time
-    lim_min = min(Temperature);
-    lim_max = max(Temperature)
-    axes2[1].set_xlim(lim_min, lim_max)
-    axes2[1].xaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    # change by hand every time
-    lim_min = min(Liq_TP[0]) - 5;
-    lim_max = max(Liq_TP[7]) + 5
-    axes2[1].set_ylim(lim_min, lim_max)
-    axes2[1].yaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    axes2[1].grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
-    axes2[1].legend(loc='upper left', fontsize=12)
-
-    file = 'V_L_TP_plot.svg'
-
-    filename = str(cwd) + path_for_figures + file
+    fig, axes = plt.subplots(1, 1, dpi=dpi)
+    axes.plot(Temperature, Vap_TP[0], 'k', linewidth=line_thickness, label=labels[0])
+    axes.plot(Temperature, Vap_TP[1], 'b', linewidth=line_thickness, label=labels[1])
+    axes.plot(Temperature, Vap_TP[2], 'c', linewidth=line_thickness, label=labels[2])
+    axes.plot(Temperature, Vap_TP[3], 'm', linewidth=line_thickness, label=labels[3])
+    axes.plot(Temperature, Vap_TP[4], 'r', linewidth=line_thickness, label=labels[4])
+    axes.plot(Temperature, Vap_TP[5], 'orange', linewidth=line_thickness, label=labels[5])
+    axes.plot(Temperature, Vap_TP[6], 'brown', linewidth=line_thickness, label=labels[6])
+    axes.plot(Temperature, Vap_TP[7], 'lime', linewidth=line_thickness, label=labels[7])
+    axes.set_xlabel(Temp_label)
+    axes.set_ylabel(r"$\mathrm{Vapour\,flow\,[kmol/d]}$")
+    axes.set_xlim(x_lim_min, x_lim_max)
+    axes.set_ylim(min(Vap_TP[7])/1.02, max(Vap_TP[0]))
+    axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
     
-    fig2.savefig(filename, dpi=800)
-
-    # x-y plot
-    fig3, axes3 = plt.subplots(4, 2, figsize=(15, 20))
-
-    axes3[0, 0].plot(Temperature, x_CH4[0], 'k', linewidth=2, label=labels[0])
-    axes3[0, 0].plot(Temperature, x_CH4[1], 'b', linewidth=2, label=labels[1])
-    axes3[0, 0].plot(Temperature, x_CH4[2], 'c', linewidth=2, label=labels[2])
-    axes3[0, 0].plot(Temperature, x_CH4[3], 'm', linewidth=2, label=labels[3])
-    axes3[0, 0].plot(Temperature, x_CH4[4], 'r', linewidth=2, label=labels[4])
-    axes3[0, 0].plot(Temperature, x_CH4[5], 'orange', linewidth=2, label=labels[5])
-    axes3[0, 0].plot(Temperature, x_CH4[6], 'brown', linewidth=2, label=labels[6])
-    axes3[0, 0].plot(Temperature, x_CH4[7], 'lime', linewidth=2, label=labels[7])
-    axes3[0, 0].set_xlabel(r"$T\,[\mathrm{°C}]$", fontsize=15)
-    axes3[0, 0].set_ylabel(r"$x{CH_4}\,[\mathrm{mol/mol}]$", fontsize=15)
-
-    # change by hand every time
-    lim_min = min(Temperature);
-    lim_max = max(Temperature)
-    axes3[0, 0].set_xlim(lim_min, lim_max)
-    axes3[0, 0].xaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    # change by hand every time
-    lim_min = min(x_CH4[0])
-    lim_max = max(x_CH4[7])
-    axes3[0, 0].set_ylim(lim_min, lim_max)
-    axes3[0, 0].yaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-    axes3[0, 0].ticklabel_format(axis='y', style='sci', scilimits=(-5, 1))
-
-    axes3[0, 0].grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
-    # axes3[0,0].legend(loc='upper left', fontsize=12)
-
-    axes3[1, 0].plot(Temperature, x_CO2[0], 'k', linewidth=2, label=labels[0])
-    axes3[1, 0].plot(Temperature, x_CO2[1], 'b', linewidth=2, label=labels[1])
-    axes3[1, 0].plot(Temperature, x_CO2[2], 'c', linewidth=2, label=labels[2])
-    axes3[1, 0].plot(Temperature, x_CO2[3], 'm', linewidth=2, label=labels[3])
-    axes3[1, 0].plot(Temperature, x_CO2[4], 'r', linewidth=2, label=labels[4])
-    axes3[1, 0].plot(Temperature, x_CO2[5], 'orange', linewidth=2, label=labels[5])
-    axes3[1, 0].plot(Temperature, x_CO2[6], 'brown', linewidth=2, label=labels[6])
-    axes3[1, 0].plot(Temperature, x_CO2[7], 'lime', linewidth=2, label=labels[7])
-    axes3[1, 0].set_xlabel(r"$T\,[\mathrm{°C}]$", fontsize=15)
-    axes3[1, 0].set_ylabel(r"$x{CO_2}\,[\mathrm{mol/mol}]$", fontsize=15)
-
-    # change by hand every time
-    lim_min = min(Temperature)
-    lim_max = max(Temperature)
-    axes3[1, 0].set_xlim(lim_min, lim_max)
-    axes3[1, 0].xaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    # change by hand every time
-    lim_min = min(x_CO2[0])
-    lim_max = max(x_CO2[7])
-    axes3[1, 0].set_ylim(lim_min, lim_max)
-    axes3[1, 0].yaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-    axes3[1, 0].ticklabel_format(axis='y', style='sci', scilimits=(-4, 4))
-
-    axes3[1, 0].grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
-    # axes3[1,0].legend(loc='upper left', fontsize=12)
-
-    axes3[2, 0].plot(Temperature, x_H2S[0], 'k', linewidth=2, label=labels[0])
-    axes3[2, 0].plot(Temperature, x_H2S[1], 'b', linewidth=2, label=labels[1])
-    axes3[2, 0].plot(Temperature, x_H2S[2], 'c', linewidth=2, label=labels[2])
-    axes3[2, 0].plot(Temperature, x_H2S[3], 'm', linewidth=2, label=labels[3])
-    axes3[2, 0].plot(Temperature, x_H2S[4], 'r', linewidth=2, label=labels[4])
-    axes3[2, 0].plot(Temperature, x_H2S[5], 'orange', linewidth=2, label=labels[5])
-    axes3[2, 0].plot(Temperature, x_H2S[6], 'brown', linewidth=2, label=labels[6])
-    axes3[2, 0].plot(Temperature, x_H2S[7], 'lime', linewidth=2, label=labels[7])
-    axes3[2, 0].set_xlabel(r"$T\,[\mathrm{°C}]$", fontsize=15)
-    axes3[2, 0].set_ylabel(r"$x{H_2S}\,[\mathrm{mol/mol}]$", fontsize=15)
-
-    # change by hand every time
-    lim_min = min(Temperature)
-    lim_max = max(Temperature)
-    axes3[2, 0].set_xlim(lim_min, lim_max)
-    axes3[2, 0].xaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    # change by hand every time
-    lim_min = min(x_H2S[0])
-    lim_max = max(x_H2S[7])
-    axes3[2, 0].set_ylim(lim_min, lim_max)
-    axes3[2, 0].yaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-    axes3[2, 0].ticklabel_format(axis='y', style='sci', scilimits=(-4, 4))
-
-    axes3[2, 0].grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
-    # axes3[2,0].legend(loc='upper left', fontsize=12)
-
-    axes3[3, 0].plot(Temperature, x_H2O[0], 'k', linewidth=2, label=labels[0])
-    axes3[3, 0].plot(Temperature, x_H2O[1], 'b', linewidth=2, label=labels[1])
-    axes3[3, 0].plot(Temperature, x_H2O[2], 'c', linewidth=2, label=labels[2])
-    axes3[3, 0].plot(Temperature, x_H2O[3], 'm', linewidth=2, label=labels[3])
-    axes3[3, 0].plot(Temperature, x_H2O[4], 'r', linewidth=2, label=labels[4])
-    axes3[3, 0].plot(Temperature, x_H2O[5], 'orange', linewidth=2, label=labels[5])
-    axes3[3, 0].plot(Temperature, x_H2O[6], 'brown', linewidth=2, label=labels[6])
-    axes3[3, 0].plot(Temperature, x_H2O[7], 'lime', linewidth=2, label=labels[7])
-    axes3[3, 0].set_xlabel(r"$T\,[\mathrm{°C}]$", fontsize=15)
-    axes3[3, 0].set_ylabel(r"$x{H_2O}\,[\mathrm{mol/mol}]$", fontsize=15)
-
-    # change by hand every time
-    lim_min = min(Temperature)
-    lim_max = max(Temperature)
-    axes3[3, 0].set_xlim(lim_min, lim_max)
-    axes3[3, 0].xaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    # change by hand every time
-    lim_min = min(x_H2O[7])
-    lim_max = 1
-    axes3[3, 0].set_ylim(lim_min, lim_max)
-    axes3[3, 0].yaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-    axes3[3, 0].ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
-
-    axes3[3, 0].grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
-    # axes3[3,0].legend(loc='upper left', fontsize=12)    
-
-    axes3[0, 1].plot(Temperature, y_CH4[0], 'k', linewidth=2, label=labels[0])
-    axes3[0, 1].plot(Temperature, y_CH4[1], 'b', linewidth=2, label=labels[1])
-    axes3[0, 1].plot(Temperature, y_CH4[2], 'c', linewidth=2, label=labels[2])
-    axes3[0, 1].plot(Temperature, y_CH4[3], 'm', linewidth=2, label=labels[3])
-    axes3[0, 1].plot(Temperature, y_CH4[4], 'r', linewidth=2, label=labels[4])
-    axes3[0, 1].plot(Temperature, y_CH4[5], 'orange', linewidth=2, label=labels[5])
-    axes3[0, 1].plot(Temperature, y_CH4[6], 'brown', linewidth=2, label=labels[6])
-    axes3[0, 1].plot(Temperature, y_CH4[7], 'lime', linewidth=2, label=labels[7])
-    axes3[0, 1].set_xlabel(r"$T\,[\mathrm{°C}]$", fontsize=15)
-    axes3[0, 1].set_ylabel(r"$y{CH_4}\,[\mathrm{mol/mol}]$", fontsize=15)
-
-    # change by hand every time
-    lim_min = min(Temperature)
-    lim_max = max(Temperature)
-    axes3[0, 1].set_xlim(lim_min, lim_max)
-    axes3[0, 1].xaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    # change by hand every time
-    lim_min = min(y_CH4[0])
-    lim_max = max(y_CH4[7])
-    axes3[0, 1].set_ylim(lim_min, lim_max)
-    axes3[0, 1].yaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-    axes3[0, 1].ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
-
-    axes3[0, 1].grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
-    # axes3[0,1].legend(loc='upper left', fontsize=12)
-
-    axes3[1, 1].plot(Temperature, y_CO2[0], 'k', linewidth=2, label=labels[0])
-    axes3[1, 1].plot(Temperature, y_CO2[1], 'b', linewidth=2, label=labels[1])
-    axes3[1, 1].plot(Temperature, y_CO2[2], 'c', linewidth=2, label=labels[2])
-    axes3[1, 1].plot(Temperature, y_CO2[3], 'm', linewidth=2, label=labels[3])
-    axes3[1, 1].plot(Temperature, y_CO2[4], 'r', linewidth=2, label=labels[4])
-    axes3[1, 1].plot(Temperature, y_CO2[5], 'orange', linewidth=2, label=labels[5])
-    axes3[1, 1].plot(Temperature, y_CO2[6], 'brown', linewidth=2, label=labels[6])
-    axes3[1, 1].plot(Temperature, y_CO2[7], 'lime', linewidth=2, label=labels[7])
-    axes3[1, 1].set_xlabel(r"$T\,[\mathrm{°C}]$", fontsize=15)
-    axes3[1, 1].set_ylabel(r"$y{CO_2}\,[\mathrm{mol/mol}]$", fontsize=15)
-
-    # change by hand every time
-    lim_min = min(Temperature)
-    lim_max = max(Temperature)
-    axes3[1, 1].set_xlim(lim_min, lim_max)
-    axes3[1, 1].xaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    # change by hand every time
-    lim_min = min(y_CO2[0])
-    lim_max = max(y_CO2[7])
-    axes3[1, 1].set_ylim(lim_min, lim_max)
-    axes3[1, 1].yaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-    axes3[1, 1].ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
-
-    axes3[1, 1].grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
-    # axes3[1,1].legend(loc='upper left', fontsize=12)
-
-    axes3[2, 1].plot(Temperature, y_H2S[0], 'k', linewidth=2, label=labels[0])
-    axes3[2, 1].plot(Temperature, y_H2S[1], 'b', linewidth=2, label=labels[1])
-    axes3[2, 1].plot(Temperature, y_H2S[2], 'c', linewidth=2, label=labels[2])
-    axes3[2, 1].plot(Temperature, y_H2S[3], 'm', linewidth=2, label=labels[3])
-    axes3[2, 1].plot(Temperature, y_H2S[4], 'r', linewidth=2, label=labels[4])
-    axes3[2, 1].plot(Temperature, y_H2S[5], 'orange', linewidth=2, label=labels[5])
-    axes3[2, 1].plot(Temperature, y_H2S[6], 'brown', linewidth=2, label=labels[6])
-    axes3[2, 1].plot(Temperature, y_H2S[7], 'lime', linewidth=2, label=labels[7])
-    axes3[2, 1].set_xlabel(r"$T\,[\mathrm{°C}]$", fontsize=15)
-    axes3[2, 1].set_ylabel(r"$y{H_2S}\,[\mathrm{mol/mol}]$", fontsize=15)
-
-    # change by hand every time
-    lim_min = min(Temperature);
-    lim_max = max(Temperature)
-    axes3[2, 1].set_xlim(lim_min, lim_max)
-    axes3[2, 1].xaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    # change by hand every time
-    lim_min = min(y_H2S[7])
-    lim_max = max(y_H2S[0])
-    axes3[2, 1].set_ylim(lim_min, lim_max)
-    axes3[2, 1].yaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-    axes3[2, 1].ticklabel_format(axis='y', style='sci', scilimits=(-2, 2))
-
-    axes3[2, 1].grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
-    # axes3[2,1].legend(loc='upper left', fontsize=12)
-
-    axes3[3, 1].plot(Temperature, y_H2O[0], 'k', linewidth=2, label=labels[0])
-    axes3[3, 1].plot(Temperature, y_H2O[1], 'b', linewidth=2, label=labels[1])
-    axes3[3, 1].plot(Temperature, y_H2O[2], 'c', linewidth=2, label=labels[2])
-    axes3[3, 1].plot(Temperature, y_H2O[3], 'm', linewidth=2, label=labels[3])
-    axes3[3, 1].plot(Temperature, y_H2O[4], 'r', linewidth=2, label=labels[4])
-    axes3[3, 1].plot(Temperature, y_H2O[5], 'orange', linewidth=2, label=labels[5])
-    axes3[3, 1].plot(Temperature, y_H2O[6], 'brown', linewidth=2, label=labels[6])
-    axes3[3, 1].plot(Temperature, y_H2O[7], 'lime', linewidth=2, label=labels[7])
-    axes3[3, 1].set_xlabel(r"$T\,[\mathrm{°C}]$", fontsize=15)
-    axes3[3, 1].set_ylabel(r"$y{H_2O}\,[\mathrm{mol/mol}]$", fontsize=15)
-
-    # change by hand every time
-    lim_min = min(Temperature)
-    lim_max = max(Temperature)
-    axes3[3, 1].set_xlim(lim_min, lim_max)
-    axes3[3, 1].xaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-
-    # change by hand every time
-    lim_min = min(y_H2O[7])
-    lim_max = max(y_H2O[0])
-    axes3[3, 1].set_ylim(lim_min, lim_max)
-    axes3[3, 1].yaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
-    axes3[3, 1].ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
-
-    axes3[3, 1].grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
-    # axes3[3,1].legend(loc='upper left', fontsize=12) 
-    axes3[3, 1].legend(loc='upper center', bbox_to_anchor=(-0.14, -0.17), ncol=len(Pressure), fontsize=12)
-
-   
-    file = 'x_y_TP_plot.svg'
-
+    file = 'V_L_TP_plot_1.svg'
     filename = str(cwd) + path_for_figures + file
-    
-    fig3.savefig(filename, dpi=800)
+    fig.savefig(filename, dpi=dpi)
 
-    return print('\nsimulation successfull!')
+    fig, axes = plt.subplots(1, 1, dpi=dpi)
+    axes.plot(Temperature, Liq_TP[0], 'k', linewidth=line_thickness, label=labels[0])
+    axes.plot(Temperature, Liq_TP[1], 'b', linewidth=line_thickness, label=labels[1])
+    axes.plot(Temperature, Liq_TP[2], 'c', linewidth=line_thickness, label=labels[2])
+    axes.plot(Temperature, Liq_TP[3], 'm', linewidth=line_thickness, label=labels[3])
+    axes.plot(Temperature, Liq_TP[4], 'r', linewidth=line_thickness, label=labels[4])
+    axes.plot(Temperature, Liq_TP[5], 'orange', linewidth=line_thickness, label=labels[5])
+    axes.plot(Temperature, Liq_TP[6], 'brown', linewidth=line_thickness, label=labels[6])
+    axes.plot(Temperature, Liq_TP[7], 'lime', linewidth=line_thickness, label=labels[7])
+    axes.set_xlabel(Temp_label)
+    axes.set_ylabel(r"$\mathrm{Liquid\,flow\,[kmol/d]}$")
+    axes.set_xlim(x_lim_min, x_lim_max)
+    axes.set_ylim(min(Liq_TP[0]) - 2, F)
+    axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+
+    file = 'V_L_TP_plot_2.svg'
+    filename = str(cwd) + path_for_figures + file
+    fig.savefig(filename, dpi=dpi)
+
+    # x-y plot    
+    fig, axes = plt.subplots(1, 1, dpi = dpi)
+    axes.plot(Temperature, x_CH4[0], 'k', linewidth=line_thickness, label=labels[0])
+    axes.plot(Temperature, x_CH4[1], 'b', linewidth=line_thickness, label=labels[1])
+    axes.plot(Temperature, x_CH4[2], 'c', linewidth=line_thickness, label=labels[2])
+    axes.plot(Temperature, x_CH4[3], 'm', linewidth=line_thickness, label=labels[3])
+    axes.plot(Temperature, x_CH4[4], 'r', linewidth=line_thickness, label=labels[4])
+    axes.plot(Temperature, x_CH4[5], 'orange', linewidth=line_thickness, label=labels[5])
+    axes.plot(Temperature, x_CH4[6], 'brown', linewidth=line_thickness, label=labels[6])
+    axes.plot(Temperature, x_CH4[7], 'lime', linewidth=line_thickness, label=labels[7])
+    axes.set_xlabel(Temp_label)
+    axes.set_ylabel(r"$\mathrm{x_{CH_4}\,[mol/mol]}$")
+    axes.set_xlim(x_lim_min, x_lim_max)
+    axes.set_ylim(min(x_CH4[0]), max(x_CH4[7]))
+    axes.ticklabel_format(axis='y', style='sci', scilimits=(-5, 1))
+    axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+
+    file = 'x_y_TP_xCH4_plot.svg'
+    filename = str(cwd) + path_for_figures + file
+    fig.savefig(filename, dpi=dpi)
+
+    fig, axes = plt.subplots(1, 1, dpi = dpi)
+    axes.plot(Temperature, x_CO2[0], 'k', linewidth=line_thickness, label=labels[0])
+    axes.plot(Temperature, x_CO2[1], 'b', linewidth=line_thickness, label=labels[1])
+    axes.plot(Temperature, x_CO2[2], 'c', linewidth=line_thickness, label=labels[2])
+    axes.plot(Temperature, x_CO2[3], 'm', linewidth=line_thickness, label=labels[3])
+    axes.plot(Temperature, x_CO2[4], 'r', linewidth=line_thickness, label=labels[4])
+    axes.plot(Temperature, x_CO2[5], 'orange', linewidth=line_thickness, label=labels[5])
+    axes.plot(Temperature, x_CO2[6], 'brown', linewidth=line_thickness, label=labels[6])
+    axes.plot(Temperature, x_CO2[7], 'lime', linewidth=line_thickness, label=labels[7])
+    axes.set_xlabel(Temp_label)
+    axes.set_ylabel(r"$\mathrm{x_{CO_2}\,[mol/mol]}$")
+    axes.set_xlim(x_lim_min, x_lim_max)
+    axes.set_ylim(min(x_CO2[0]), max(x_CO2[7]))
+    axes.ticklabel_format(axis='y', style='sci', scilimits=(-4, 4))
+    axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+
+    file = 'x_y_TP_xCO2_plot.svg'
+    filename = str(cwd) + path_for_figures + file
+    fig.savefig(filename, dpi=dpi)
+
+    fig, axes = plt.subplots(1, 1, dpi = dpi)
+    axes.plot(Temperature, x_H2S[0], 'k', linewidth=line_thickness, label=labels[0])
+    axes.plot(Temperature, x_H2S[1], 'b', linewidth=line_thickness, label=labels[1])
+    axes.plot(Temperature, x_H2S[2], 'c', linewidth=line_thickness, label=labels[2])
+    axes.plot(Temperature, x_H2S[3], 'm', linewidth=line_thickness, label=labels[3])
+    axes.plot(Temperature, x_H2S[4], 'r', linewidth=line_thickness, label=labels[4])
+    axes.plot(Temperature, x_H2S[5], 'orange', linewidth=line_thickness, label=labels[5])
+    axes.plot(Temperature, x_H2S[6], 'brown', linewidth=line_thickness, label=labels[6])
+    axes.plot(Temperature, x_H2S[7], 'lime', linewidth=line_thickness, label=labels[7])
+    axes.set_xlabel(Temp_label)
+    axes.set_ylabel(r"$\mathrm{x_{H_2S}\,[mol/mol]}$")
+    axes.set_xlim(x_lim_min, x_lim_max)
+    axes.set_ylim(min(x_H2S[0]), max(x_H2S[7]))
+    axes.ticklabel_format(axis='y', style='sci', scilimits=(-4, 4))
+    axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+
+    file = 'x_y_TP_xH2S_plot.svg'
+    filename = str(cwd) + path_for_figures + file
+    fig.savefig(filename, dpi=dpi)
+
+    fig, axes = plt.subplots(1, 1, dpi = dpi)
+    axes.plot(Temperature, x_H2O[0], 'k', linewidth=line_thickness, label=labels[0])
+    axes.plot(Temperature, x_H2O[1], 'b', linewidth=line_thickness, label=labels[1])
+    axes.plot(Temperature, x_H2O[2], 'c', linewidth=line_thickness, label=labels[2])
+    axes.plot(Temperature, x_H2O[3], 'm', linewidth=line_thickness, label=labels[3])
+    axes.plot(Temperature, x_H2O[4], 'r', linewidth=line_thickness, label=labels[4])
+    axes.plot(Temperature, x_H2O[5], 'orange', linewidth=line_thickness, label=labels[5])
+    axes.plot(Temperature, x_H2O[6], 'brown', linewidth=line_thickness, label=labels[6])
+    axes.plot(Temperature, x_H2O[7], 'lime', linewidth=line_thickness, label=labels[7])
+    axes.set_xlabel(Temp_label)
+    axes.set_ylabel(r"$\mathrm{x_{H_2O}\,[mol/mol]}$")
+    axes.set_xlim(x_lim_min, x_lim_max)
+    axes.set_ylim(min(x_H2O[7]), 1)
+    axes.ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
+    axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+
+    file = 'x_y_TP_xH2O_plot.svg'
+    filename = str(cwd) + path_for_figures + file
+    fig.savefig(filename, dpi=dpi)
+
+    fig, axes = plt.subplots(1, 1, dpi = dpi)
+    axes.plot(Temperature, y_CH4[0], 'k', linewidth=line_thickness, label=labels[0])
+    axes.plot(Temperature, y_CH4[1], 'b', linewidth=line_thickness, label=labels[1])
+    axes.plot(Temperature, y_CH4[2], 'c', linewidth=line_thickness, label=labels[2])
+    axes.plot(Temperature, y_CH4[3], 'm', linewidth=line_thickness, label=labels[3])
+    axes.plot(Temperature, y_CH4[4], 'r', linewidth=line_thickness, label=labels[4])
+    axes.plot(Temperature, y_CH4[5], 'orange', linewidth=line_thickness, label=labels[5])
+    axes.plot(Temperature, y_CH4[6], 'brown', linewidth=line_thickness, label=labels[6])
+    axes.plot(Temperature, y_CH4[7], 'lime', linewidth=line_thickness, label=labels[7])
+    axes.set_xlabel(Temp_label)
+    axes.set_ylabel(r"$\mathrm{y_{CH_4}\,[mol/mol]}$")
+    axes.set_xlim(x_lim_min, x_lim_max)
+    axes.set_ylim(min(y_CH4[0]), max(y_CH4[7]))
+    axes.ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
+    axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+
+    file = 'x_y_TP_yCH4_plot.svg'
+    filename = str(cwd) + path_for_figures + file
+    fig.savefig(filename, dpi=dpi)
+
+    fig, axes = plt.subplots(1, 1, dpi = dpi)
+    axes.plot(Temperature, y_CO2[0], 'k', linewidth=line_thickness, label=labels[0])
+    axes.plot(Temperature, y_CO2[1], 'b', linewidth=line_thickness, label=labels[1])
+    axes.plot(Temperature, y_CO2[2], 'c', linewidth=line_thickness, label=labels[2])
+    axes.plot(Temperature, y_CO2[3], 'm', linewidth=line_thickness, label=labels[3])
+    axes.plot(Temperature, y_CO2[4], 'r', linewidth=line_thickness, label=labels[4])
+    axes.plot(Temperature, y_CO2[5], 'orange', linewidth=line_thickness, label=labels[5])
+    axes.plot(Temperature, y_CO2[6], 'brown', linewidth=line_thickness, label=labels[6])
+    axes.plot(Temperature, y_CO2[7], 'lime', linewidth=line_thickness, label=labels[7])
+    axes.set_xlabel(Temp_label)
+    axes.set_ylabel(r"$\mathrm{y_{CO_2}\,[mol/mol]}$")
+    axes.set_xlim(x_lim_min, x_lim_max)
+    axes.set_ylim(min(y_CO2[0]), max(y_CO2[7]))
+    axes.ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
+    axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+
+    file = 'x_y_TP_yCO2_plot.svg'
+    filename = str(cwd) + path_for_figures + file
+    fig.savefig(filename, dpi=dpi)
+
+    fig, axes = plt.subplots(1, 1, dpi = dpi)
+    axes.plot(Temperature, y_H2S[0], 'k', linewidth=line_thickness, label=labels[0])
+    axes.plot(Temperature, y_H2S[1], 'b', linewidth=line_thickness, label=labels[1])
+    axes.plot(Temperature, y_H2S[2], 'c', linewidth=line_thickness, label=labels[2])
+    axes.plot(Temperature, y_H2S[3], 'm', linewidth=line_thickness, label=labels[3])
+    axes.plot(Temperature, y_H2S[4], 'r', linewidth=line_thickness, label=labels[4])
+    axes.plot(Temperature, y_H2S[5], 'orange', linewidth=line_thickness, label=labels[5])
+    axes.plot(Temperature, y_H2S[6], 'brown', linewidth=line_thickness, label=labels[6])
+    axes.plot(Temperature, y_H2S[7], 'lime', linewidth=line_thickness, label=labels[7])
+    axes.set_xlabel(Temp_label)
+    axes.set_ylabel(r"$\mathrm{y_{H_2S}\,[mol/mol]}$")
+    axes.set_xlim(x_lim_min, x_lim_max)
+    axes.set_ylim(min(y_H2S[7]), max(y_H2S[0]))
+    axes.ticklabel_format(axis='y', style='sci', scilimits=(-2, 2))
+    axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+    
+    file = 'x_y_TP_yH2S_plot.svg'
+    filename = str(cwd) + path_for_figures + file
+    fig.savefig(filename, dpi=dpi)
+
+    fig, axes = plt.subplots(1, 1, dpi = dpi)
+    axes.plot(Temperature, y_H2O[0], 'k', linewidth=line_thickness, label=labels[0])
+    axes.plot(Temperature, y_H2O[1], 'b', linewidth=line_thickness, label=labels[1])
+    axes.plot(Temperature, y_H2O[2], 'c', linewidth=line_thickness, label=labels[2])
+    axes.plot(Temperature, y_H2O[3], 'm', linewidth=line_thickness, label=labels[3])
+    axes.plot(Temperature, y_H2O[4], 'r', linewidth=line_thickness, label=labels[4])
+    axes.plot(Temperature, y_H2O[5], 'orange', linewidth=line_thickness, label=labels[5])
+    axes.plot(Temperature, y_H2O[6], 'brown', linewidth=line_thickness, label=labels[6])
+    axes.plot(Temperature, y_H2O[7], 'lime', linewidth=line_thickness, label=labels[7])
+    axes.set_xlabel(Temp_label)
+    axes.set_ylabel(r"$\mathrm{y_{H_2O}\,[mol/mol]}$")
+    axes.set_xlim(x_lim_min, x_lim_max)
+    axes.set_ylim(min(y_H2O[7]), max(y_H2O[0]))
+    axes.ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
+    axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+    axes.legend(loc='upper center', bbox_to_anchor=(-0.14, -0.17), ncol=len(Pressure), fontsize=12)
+
+    file = 'x_y_TP_yH2O_plot.svg'
+    filename = str(cwd) + path_for_figures + file
+    fig.savefig(filename, dpi=dpi)
