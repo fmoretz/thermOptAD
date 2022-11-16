@@ -1,6 +1,34 @@
 CO2/__pycache__/
+CO2/.vscode/
+CO2/.idea/
+CO2/.vs/
+
+Helmoltz v0/.idea/
+Helmoltz v0/.vscode/
+Helmoltz v0/.vs/
 Helmoltz v0/src/__pycache__/
+Helmoltz v0/src/utility/__pycache__/
+Helmoltz v0/src/utility/old version/__pycache__/
+
 Helmoltz v1/src/__pycache__/
 Helmoltz v1/src/utility/__pycache__/
-.DS_store
+Helmoltz v2/src/utility/old version/__pycache__/
+Helmoltz v1/.vscode/
+Helmoltz v1/.idea/
+Helmoltz v1/.vs/
+
+Helmoltz v2/src/__pycache__/
+Helmoltz v2/src/utility/__pycache__/
+Helmoltz v2/src/utility/old version/__pycache__/
+Helmoltz v2/.vscode/
+Helmoltz v2/.idea/
+Helmoltz v2/.vs/
+
+Helmoltz v3/.vscode/
+Helmoltz v3/.vs/
+Helmoltz v3/.idea/
+Helmoltz v3/src/__pycache__/
+Helmoltz v3/src/utility/__pycache__/
+Helmoltz v3/src/utility/old version/__pycache__/
+
 

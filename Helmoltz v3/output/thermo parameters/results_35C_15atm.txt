@@ -1,0 +1,85 @@
+# ======= Thermodynamic parameters for species and conditions ======= #
+Operative Conditions:
+Temperature____: 35.000 [°C]
+Pressure_______: 1.500 [atm]
+Vapour fraction: 0.005 [--]
+
+Species: CH4 -- phase: Liquid
+Dimensionless SW's Helmholtz energy: 4.69282 [--]
+Molar entropy______________________: -58.72 [J/mol/K]
+Molar enthalpy_____________________: -3200.27 [J/mol/K]
+Isobaric heat capacity_____________: 52.456 [J/mol/K]
+Isochoric heat capacity____________: 30.674 [J/mol/K]
+Cubic expansion coefficient________: 0.00334 [1/K]
+Fugacity coeffcient________________: 0.74755 [--]
+
+Species: CH4 -- phase: Vapour
+Dimensionless SW's Helmholtz energy: -0.34663 [--]
+Molar entropy______________________: -4.35 [J/mol/K]
+Molar enthalpy_____________________: 324.71 [J/mol/K]
+Isobaric heat capacity_____________: 36.253 [J/mol/K]
+Isochoric heat capacity____________: 27.800 [J/mol/K]
+Cubic expansion coefficient________: 0.00328 [1/K]
+Fugacity coeffcient________________: 0.99702 [--]
+Fugacity coeffcient (mixture)______: 1.00149 [--]
+
+
+Species: CO2 -- phase: Liquid
+Dimensionless SW's Helmholtz energy: 4.20820 [--]
+Molar entropy______________________: -84.93 [J/mol/K]
+Molar enthalpy_____________________: -8352.92 [J/mol/K]
+Isobaric heat capacity_____________: 67.838 [J/mol/K]
+Isochoric heat capacity____________: 43.407 [J/mol/K]
+Cubic expansion coefficient________: 0.00128 [1/K]
+Fugacity coeffcient________________: 0.54294 [--]
+
+Species: CO2 -- phase: Vapour
+Dimensionless SW's Helmholtz energy: -0.59686 [--]
+Molar entropy______________________: -2.29 [J/mol/K]
+Molar enthalpy_____________________: 310.24 [J/mol/K]
+Isobaric heat capacity_____________: 37.997 [J/mol/K]
+Isochoric heat capacity____________: 29.417 [J/mol/K]
+Cubic expansion coefficient________: 0.00332 [1/K]
+Fugacity coeffcient________________: 0.99323 [--]
+Fugacity coeffcient (mixture)______: 0.99775 [--]
+
+
+Species: H2S -- phase: Liquid
+Dimensionless SW's Helmholtz energy: -0.50262 [--]
+Molar entropy______________________: 25.78 [J/mol/K]
+Molar enthalpy_____________________: 6771.57 [J/mol/K]
+Isobaric heat capacity_____________: 79.648 [J/mol/K]
+Isochoric heat capacity____________: 36.381 [J/mol/K]
+Cubic expansion coefficient________: 0.00386 [1/K]
+Fugacity coeffcient________________: 0.81827 [--]
+
+Species: H2S -- phase: Vapour
+Dimensionless SW's Helmholtz energy: -4.08686 [--]
+Molar entropy______________________: 96.77 [J/mol/K]
+Molar enthalpy_____________________: 21872.28 [J/mol/K]
+Isobaric heat capacity_____________: 34.698 [J/mol/K]
+Isochoric heat capacity____________: 26.003 [J/mol/K]
+Cubic expansion coefficient________: 0.00336 [1/K]
+Fugacity coeffcient________________: 0.98973 [--]
+Fugacity coeffcient (mixture)______: 0.99382 [--]
+
+
+Species: H2O -- phase: Liquid
+Dimensionless SW's Helmholtz energy: 0.28847 [--]
+Molar entropy______________________: 18.26 [J/mol/K]
+Molar enthalpy_____________________: 6362.99 [J/mol/K]
+Isobaric heat capacity_____________: 50.360 [J/mol/K]
+Isochoric heat capacity____________: -32.556 [J/mol/K]
+Cubic expansion coefficient________: 0.00147 [1/K]
+Fugacity coeffcient________________: 1.4155 [--]
+
+Species: H2O -- phase: Vapour
+Dimensionless SW's Helmholtz energy: 0.28847 [--]
+Molar entropy______________________: 18.26 [J/mol/K]
+Molar enthalpy_____________________: 6364.27 [J/mol/K]
+Isobaric heat capacity_____________: 50.359 [J/mol/K]
+Isochoric heat capacity____________: -32.534 [J/mol/K]
+Cubic expansion coefficient________: 0.00147 [1/K]
+Fugacity coeffcient________________: 0.05212 [--]
+Fugacity coeffcient (mixture)______: 0.95118 [--]
+
