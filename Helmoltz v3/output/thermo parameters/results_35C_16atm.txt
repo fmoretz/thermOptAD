@@ -1,6 +1,6 @@
 # ======= Thermodynamic parameters for species and conditions ======= #
 Operative Conditions:
-Temperature____: 35.000 [°C]
+Temperature____: 35.000 [Â°C]
 Pressure_______: 1.600 [atm]
 Vapour fraction: 0.005 [--]
 

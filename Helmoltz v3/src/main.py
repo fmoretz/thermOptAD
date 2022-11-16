@@ -19,7 +19,7 @@ model(
     )
 
 mole_day(
-    lks = species[:1], 
+    lks = species[:-1], 
     hk  = species[-1], 
     Temp_degC = Temperature, 
     Pres_atm  = Pressure,

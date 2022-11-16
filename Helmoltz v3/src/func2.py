@@ -958,7 +958,9 @@ def mole_day(lks, hk: str, Temp_degC, Pres_atm, Height, Diameter):
 
     A = lks
     B = hk
-
+    print(f'low keys: {A}')
+    print(f'high keys: {B}')
+    
    # diffusion coefficients for i species in water (m2/s)
     D = {
         A[0]: [(0.0295*T[i] + 1.1246)*10**(-9) for i in range(len(T))], # Moradi et al., 2020
