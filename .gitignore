@@ -12,7 +12,7 @@ Helmoltz v0/src/utility/old version/__pycache__/
 
 Helmoltz v1/src/__pycache__/
 Helmoltz v1/src/utility/__pycache__/
-Helmoltz v2/src/utility/old version/__pycache__/
+Helmoltz v1/src/utility/old version/__pycache__/
 Helmoltz v1/.vscode/
 Helmoltz v1/.idea/
 Helmoltz v1/.vs/
@@ -30,5 +30,17 @@ Helmoltz v3/.idea/
 Helmoltz v3/src/__pycache__/
 Helmoltz v3/src/utility/__pycache__/
 Helmoltz v3/src/utility/old version/__pycache__/
+Helmoltz v3/src/utility/__pycache__/
 
+.vscode/
+.__pycache__/
+.vs/
 
+venv/
+~$*
+tempCodeRunnerFile*
+CO2/venv/
+Helmoltz v0/venv/
+Helmoltz v1/venv/
+Helmoltz v2/venv/
+Helmoltz v3/venv/

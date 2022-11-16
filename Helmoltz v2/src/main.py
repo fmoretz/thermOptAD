@@ -1,6 +1,5 @@
 from model import model
 from func2 import mole_day
-from joblib import Parallel, delayed
 import time
 
 # define operative conditions

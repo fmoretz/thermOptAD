@@ -2,9 +2,9 @@ import pandas as pd
 from pathlib import Path
 
 cwd = str(Path.cwd())
-file_path = cwd + '/input/input_parameters.xlsx'
+file_path = cwd + '/'
 
-initial_composition_array = pd.read_excel(file_path, header=None)
+initial_composition_array = pd.read_excel('./Helmoltz v3/input/input_parameters.xlsx', header=None)
 
 # [column number][row number] - starting from [0][0] = A1
 z = {
@@ -22,10 +22,7 @@ z = {
 }  # mol/mol
 
 F = float(initial_composition_array[2][6])  # flow [kmol/d] - load [kmol]
-
-
-""" MUST BE IMPLEMENTED AFTER THE PAPER SUBMISSION 
 P = float(initial_composition_array[2][7])  # pressure [atm]
 T = float(initial_composition_array[2][8])  # temperature [°C]
 L = float(initial_composition_array[2][9])  # height [m]
-B = float(initial_composition_array[2][10]) # diameter [m] """
+B = float(initial_composition_array[2][10]) # diameter [m]

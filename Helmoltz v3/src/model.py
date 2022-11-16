@@ -5,7 +5,6 @@ from sympy import sympify
 from func2 import *
 import numpy as np
 from initial import *
-import os
 from pathlib import Path
 
 def model(Temperature, Pressure, species):
