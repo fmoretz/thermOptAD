@@ -9,18 +9,18 @@ def model(Temperature, Pressure, species):
     plt.style.use(['science','no-latex'])
     alpha0 = z['CH4'] + z['CO2'] + z['H2S']
 
-    alpha_TP = np.empty(shape=(len(Pressure), len(Temperature)))
-    x_CH4 = np.empty(shape=(len(Pressure), len(Temperature)))
-    y_CH4 = np.empty(shape=(len(Pressure), len(Temperature)))
-    x_CO2 = np.empty(shape=(len(Pressure), len(Temperature)))
-    y_CO2 = np.empty(shape=(len(Pressure), len(Temperature)))
-    x_H2S = np.empty(shape=(len(Pressure), len(Temperature)))
-    y_H2S = np.empty(shape=(len(Pressure), len(Temperature)))
-    x_H2O = np.empty(shape=(len(Pressure), len(Temperature)))
-    y_H2O = np.empty(shape=(len(Pressure), len(Temperature)))
-    Vap_TP = np.empty(shape=(len(Pressure), len(Temperature)))
-    Liq_TP = np.empty(shape=(len(Pressure), len(Temperature)))
-
+    alpha_TP = np.empty(shape=(len(Pressure), len(Temperature)))  # --
+    x_CH4    = np.empty(shape=(len(Pressure), len(Temperature)))  # --
+    y_CH4    = np.empty(shape=(len(Pressure), len(Temperature)))  # --
+    x_CO2    = np.empty(shape=(len(Pressure), len(Temperature)))  # --
+    y_CO2    = np.empty(shape=(len(Pressure), len(Temperature)))  # --
+    x_H2S    = np.empty(shape=(len(Pressure), len(Temperature)))  # --
+    y_H2S    = np.empty(shape=(len(Pressure), len(Temperature)))  # --
+    x_H2O    = np.empty(shape=(len(Pressure), len(Temperature)))  # --
+    y_H2O    = np.empty(shape=(len(Pressure), len(Temperature)))  # --
+    Vap_TP   = np.empty(shape=(len(Pressure), len(Temperature)))  # kmol/d
+    Liq_TP   = np.empty(shape=(len(Pressure), len(Temperature)))  # kmol/d
+  
     i = 0  # index for cycling in T for-loop
     j = 0  # index for cycling in P for-loop
 
@@ -28,31 +28,31 @@ def model(Temperature, Pressure, species):
         T = T + 273  # K
 
         for P in Pressure:
-            P = P * 101325
+            P = P * 101325  # Pa
 
             # initialization
-            Ar_V = {key: 0 for key in species}  # --
-            entropy_V = {key: 0 for key in species}  # J/mol/K
+            Ar_V       = {key: 0 for key in species}  # --
+            entropy_V  = {key: 0 for key in species}  # J/mol/K
             enthalpy_V = {key: 0 for key in species}  # J/mol/K
-            cp_V = {key: 0 for key in species}  # J/mol/K
-            cv_V = {key: 0 for key in species}  # J/mol/K
+            cp_V       = {key: 0 for key in species}  # J/mol/K
+            cv_V       = {key: 0 for key in species}  # J/mol/K
             cubicExp_V = {key: 0 for key in species}  # --
-            fuga_V = {key: 0 for key in species}  # --
-            fuga_m = {key: 0 for key in species}  # --
-            Ar_L = {key: 0 for key in species}  # --
-            entropy_L = {key: 0 for key in species}  # J/mol/K
+            fuga_V     = {key: 0 for key in species}  # --
+            fuga_m     = {key: 0 for key in species}  # --
+            Ar_L       = {key: 0 for key in species}  # --
+            entropy_L  = {key: 0 for key in species}  # J/mol/K
             enthalpy_L = {key: 0 for key in species}  # J/mol/K
-            cp_L = {key: 0 for key in species}  # J/mol/K
-            cv_L = {key: 0 for key in species}  # J/mol/K
+            cp_L       = {key: 0 for key in species}  # J/mol/K
+            cv_L       = {key: 0 for key in species}  # J/mol/K
             cubicExp_L = {key: 0 for key in species}  # --
-            fuga_L = {key: 0 for key in species}  # --
-            Psat = {key: 0 for key in species}  # Pa
-            dens_L = {key: 0 for key in species}  # kg * m^(-3)
-            dens_V = {key: 0 for key in species}  # kg * m^(-3)
-            x = {key: 0 for key in species}  # mol/mol
-            y = {key: 0 for key in species}  # mol/mol
-            Lx = {key: 0 for key in species}  # kmol/d
-            Vy = {key: 0 for key in species}  # kmol/d
+            fuga_L     = {key: 0 for key in species}  # --
+            Psat       = {key: 0 for key in species}  # Pa
+            dens_L     = {key: 0 for key in species}  # kg * m^(-3)
+            dens_V     = {key: 0 for key in species}  # kg * m^(-3)
+            x          = {key: 0 for key in species}  # mol/mol
+            y          = {key: 0 for key in species}  # mol/mol
+            Lx         = {key: 0 for key in species}  # kmol/d
+            Vy         = {key: 0 for key in species}  # kmol/d
 
             for specie in species:
 
@@ -68,23 +68,23 @@ def model(Temperature, Pressure, species):
                 else:
                     Psat[specie] = Antoine(Ant[specie], T) * 101325 # kPa to Pa
                 
-                dens_L[specie] = density(d_liq[specie], T, Psat[specie], specie)
-                dens_V[specie] = density(d_vap[specie], T, P, specie)
-                Ar_L[specie] = sympify(VLProperties(0, T, dens_L[specie], specie))
-                entropy_L[specie] = sympify(VLProperties(1, T, dens_L[specie], specie))
+                dens_L[specie]     = density(d_liq[specie], T, Psat[specie], specie)
+                dens_V[specie]     = density(d_vap[specie], T, P, specie)
+                Ar_L[specie]       = sympify(VLProperties(0, T, dens_L[specie], specie))
+                entropy_L[specie]  = sympify(VLProperties(1, T, dens_L[specie], specie))
                 enthalpy_L[specie] = sympify(VLProperties(2, T, dens_L[specie], specie))
-                cp_L[specie] = sympify(VLProperties(3, T, dens_L[specie], specie))
-                cv_L[specie] = sympify(VLProperties(4, T, dens_L[specie], specie))
+                cp_L[specie]       = sympify(VLProperties(3, T, dens_L[specie], specie))
+                cv_L[specie]       = sympify(VLProperties(4, T, dens_L[specie], specie))
                 cubicExp_L[specie] = sympify(VLProperties(5, T, dens_L[specie], specie))
-                fuga_L[specie] = sympify(VLProperties(6, T, dens_L[specie], specie))
-                fuga_m[specie] = fug_mix_helmoltz(specie, T, P)
-                Ar_V[specie] = sympify(VLProperties(0, T, dens_V[specie], specie))
-                entropy_V[specie] = sympify(VLProperties(1, T, dens_V[specie], specie))
+                fuga_L[specie]     = sympify(VLProperties(6, T, dens_L[specie], specie))
+                fuga_m[specie]     = fug_mix_helmoltz(specie, T, P)
+                Ar_V[specie]       = sympify(VLProperties(0, T, dens_V[specie], specie))
+                entropy_V[specie]  = sympify(VLProperties(1, T, dens_V[specie], specie))
                 enthalpy_V[specie] = sympify(VLProperties(2, T, dens_V[specie], specie))
-                cp_V[specie] = sympify(VLProperties(3, T, dens_V[specie], specie))
-                cv_V[specie] = sympify(VLProperties(4, T, dens_V[specie], specie))
+                cp_V[specie]       = sympify(VLProperties(3, T, dens_V[specie], specie))
+                cv_V[specie]       = sympify(VLProperties(4, T, dens_V[specie], specie))
                 cubicExp_V[specie] = sympify(VLProperties(5, T, dens_V[specie], specie))
-                fuga_V[specie] = sympify(VLProperties(6, T, dens_V[specie], specie))
+                fuga_V[specie]     = sympify(VLProperties(6, T, dens_V[specie], specie))
 
             k = {
                 key: Psat[key] * fuga_L[key] / (P * fuga_m[key]) for key in species
@@ -95,9 +95,9 @@ def model(Temperature, Pressure, species):
             reduced_k = {key: k[key] for key in species}
             
             alpha = fsolve(
-                func=RR,
-                x0=alpha0,
-                args=(
+                func = RR,
+                x0   = alpha0,
+                args = (
                     list(reduced_z.values()),
                     list(reduced_k.values())
                 )
@@ -108,21 +108,21 @@ def model(Temperature, Pressure, species):
             L = F - V
 
             for specie in species:
-                x[specie] = z[specie] / (1 + alpha * (k[specie] - 1))
-                y[specie] = x[specie] * k[specie]
+                x[specie]  = z[specie] / (1 + alpha * (k[specie] - 1))
+                y[specie]  = x[specie] * k[specie]
                 Vy[specie] = V * y[specie]
                 Lx[specie] = L * x[specie]
 
             # array allocation of pressure(j)-temperature(i) dependent variables
             alpha_TP[j][i] = alpha
-            x_CH4[j][i] = x['CH4']
-            y_CH4[j][i] = y['CH4']
-            x_CO2[j][i] = x['CO2']
-            y_CO2[j][i] = y['CO2']
-            x_H2S[j][i] = x['H2S']
-            y_H2S[j][i] = y['H2S']
-            x_H2O[j][i] = x['H2O']
-            y_H2O[j][i] = y['H2O']
+            x_CH4[j][i]  = x['CH4']
+            y_CH4[j][i]  = y['CH4']
+            x_CO2[j][i]  = x['CO2']
+            y_CO2[j][i]  = y['CO2']
+            x_H2S[j][i]  = x['H2S']
+            y_H2S[j][i]  = y['H2S']
+            x_H2O[j][i]  = x['H2O']
+            y_H2O[j][i]  = y['H2O']
             Vap_TP[j][i] = V
             Liq_TP[j][i] = L
 
@@ -224,6 +224,7 @@ def model(Temperature, Pressure, species):
     axes.set_ylim(0.003, 0.02)
     plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+    axes.legend(loc='best')
     
     path_for_figures = '/output/VLE figures/'
     file = 'alpha_TP_plot.svg'
@@ -256,7 +257,8 @@ def model(Temperature, Pressure, species):
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(min(Liq_TP[0]) - 2, F)
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-
+    axes.legend(loc='best')
+    
     file = 'V_L_TP_plot_2.svg'
     filename = str(cwd) + path_for_figures + file
     fig.savefig(filename, dpi=dpi)
@@ -289,6 +291,7 @@ def model(Temperature, Pressure, species):
     axes.set_ylim(min(x_CO2[0]), max(x_CO2[len(Pressure)-1]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-2, 0))
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+    axes.legend(loc='best')
 
     file = 'x_y_TP_xCO2_plot.svg'
     filename = str(cwd) + path_for_figures + file

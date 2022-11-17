@@ -22,11 +22,11 @@ def pressure_densityPlot(specie):
   R_m = R_m[specie]
   
   # Set up the features of plot 
-  plt.figure(num=None, dpi=80, facecolor='w', edgecolor='k')
-  matplotlib.rcParams.update({'font.size': 12, 'font.family': 'STIXGeneral', 'mathtext.fontset': 'stix'})
-  matplotlib.rcParams['font.sans-serif'] = "Arial"
-
-  fig, axes = plt.subplots(1, 2, figsize=(20, 10))
+  plt.style.use(['science', 'no-latex'])
+  
+  dpi = 500
+  
+  fig, axes = plt.subplots(1, 2, dpi=dpi, figsize=(10, 5))
   
   T_range = [25+273, 30+273, 35+273, 40+273, 45+273, 50+273, 55+273] # K
   
@@ -61,44 +61,44 @@ def pressure_densityPlot(specie):
     'T = ' + str(T_range[6]) + ' K',
   ]
   
-  axes[0].plot(x, y1/10**6,'k',     lw=2.0,label=labels[0])
-  axes[0].plot(x, y2/10**6,'b',     lw=2.0,label=labels[1])
-  axes[0].plot(x, y3/10**6,'c',     lw=2.0,label=labels[2])
-  axes[0].plot(x, y4/10**6,'m',     lw=2.0,label=labels[3])
-  axes[0].plot(x, y5/10**6,'r',     lw=2.0,label=labels[4])
-  axes[0].plot(x, y6/10**6,'orange',lw=2.0,label=labels[5])
-  axes[0].plot(x, y7/10**6,'lime',  lw=2.0,label=labels[6])
+  axes[0].plot(x, y1/10**6,'k',     label=labels[0])
+  axes[0].plot(x, y2/10**6,'b',     label=labels[1])
+  axes[0].plot(x, y3/10**6,'c',     label=labels[2])
+  axes[0].plot(x, y4/10**6,'m',     label=labels[3])
+  axes[0].plot(x, y5/10**6,'r',     label=labels[4])
+  axes[0].plot(x, y6/10**6,'orange',label=labels[5])
+  axes[0].plot(x, y7/10**6,'lime',  label=labels[6])
 
-  axes[0].grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
-  axes[0].set_xlabel(r"$\rho_{H_2O}\,[\mathrm{kg}/\mathrm{m}^{3}]$", fontsize=15)
-  axes[0].set_ylabel(r"$P\,[\mathrm{MPa}]$", fontsize=15)
-  lim_min = 0; lim_max = 1000
-  axes[0].set_xlim(lim_min, lim_max)
-  axes[0].xaxis.set_ticks(np.linspace(lim_min, lim_max, 11, endpoint=True))
+  axes[0].grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+  axes[0].set_xlabel(r"$\mathrm{\rho_{H_2O}[kg/m^3]}$")
+  axes[0].set_ylabel(r"$\mathrm{P\,[MPa]}$")
+  axes[0].set_xlim(0, 1000)
+  axes[0].xaxis.set_ticks(np.linspace(0, 1000, 11, endpoint=True))
   axes[0].set_ylim(0, 50)
   axes[0].yaxis.set_ticks(np.linspace(0, 50, 11, endpoint=True))
-  axes[0].legend(loc='upper left', fontsize=12)
+  axes[0].legend(loc='upper left')
 
-  axes[1].plot(x, y1/10**6,'k',     lw=2.0,label=labels[0])
-  axes[1].plot(x, y2/10**6,'b',     lw=2.0,label=labels[1])
-  axes[1].plot(x, y3/10**6,'c',     lw=2.0,label=labels[2])
-  axes[1].plot(x, y4/10**6,'m',     lw=2.0,label=labels[3])
-  axes[1].plot(x, y5/10**6,'r',     lw=2.0,label=labels[4])
-  axes[1].plot(x, y6/10**6,'orange',lw=2.0,label=labels[5])
-  axes[1].plot(x, y7/10**6,'lime',  lw=2.0,label=labels[6])
+  axes[1].plot(x, y1/10**6,'k',     label=labels[0])
+  axes[1].plot(x, y2/10**6,'b',     label=labels[1])
+  axes[1].plot(x, y3/10**6,'c',     label=labels[2])
+  axes[1].plot(x, y4/10**6,'m',     label=labels[3])
+  axes[1].plot(x, y5/10**6,'r',     label=labels[4])
+  axes[1].plot(x, y6/10**6,'orange',label=labels[5])
+  axes[1].plot(x, y7/10**6,'lime',  label=labels[6])
 
-  axes[1].grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
-  axes[1].set_xlabel(r"$\rho_{H_2O}[\mathrm{kg}/\mathrm{m}^{3}]$", fontsize=15)
-  axes[1].set_ylabel(r"$P\,[\mathrm{MPa}]$", fontsize=15)
-  lim_min = 800; lim_max = 900
-  axes[1].set_xlim(lim_min, lim_max)
-  axes[1].xaxis.set_ticks(np.linspace(lim_min,  lim_max, 11, endpoint=True))
+  axes[1].grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+  axes[1].set_xlabel(r"$\mathrm{\rho_{H_2O}\,[kg/m^3]}$")
+  axes[1].set_ylabel(r"$\mathrm{P\,[MPa]}$")
+  axes[1].set_xlim(800, 860)
+  axes[1].xaxis.set_ticks(np.linspace(800, 860, 11, endpoint=True))
   axes[1].set_ylim(0, 10)
-  axes[1].yaxis.set_ticks(np.linspace(0, 10, 11, endpoint=True))
-  axes[1].legend(loc='upper left', fontsize=12)
+  axes[1].yaxis.set_ticks(np.linspace(0, 10, 11,  endpoint=True))
+  axes[1].legend(loc='upper left')
 
-  filename = str(specie) + '_densityPlot.svg'
-  fig.savefig(filename, dpi=800)
+  filename1 = str(specie) + '_densityPlot.svg'
+  filename2 = str(specie) + '_densityPlot.png'
+  fig.savefig(filename1, dpi = dpi)
+  fig.savefig(filename2, dpi = dpi)
   return print('\nfigure saved succesfully!\n')
 
 # ==================================================================== #
@@ -202,6 +202,5 @@ def temperature_fugacityPlot(specie):
   return print('\nfigure saved succesfully!\n')
 
 #! Remember to change xlim-ylim ranges of the plots
-specie = 'H2O'
-# pressure_densityPlot(specie)
-temperature_fugacityPlot(specie)
+species     = ['CH4', 'CO2', 'H2S', 'H2O']
+pressure_densityPlot(species[3])

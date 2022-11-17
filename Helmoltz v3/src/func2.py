@@ -7,8 +7,6 @@ from scipy.optimize import fsolve
 from prop2 import *
 import pandas as pd
 from matplotlib import pyplot as plt
-from sklearn.preprocessing import MinMaxScaler
-from numba import njit
 from pathlib import Path
 plt.style.use(['science', 'no-latex'])
 warnings.filterwarnings('ignore')
@@ -945,11 +943,9 @@ def water_viscosity(T_K: float):
  
 def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool=False):
 
-    dpi = 180
+    dpi = 250
 
-    scaler = MinMaxScaler()
-
-    # evaluate the molar flux of a species ina binary mixture (A-W) where:
+   # evaluate the molar flux of a species ina binary mixture (A-W) where:
     T = Temp_degC  # °C
     p = Pres_atm  # atm
     R = 0.0821e-3 # atm m3 / mol K
@@ -983,13 +979,10 @@ def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool
        
     # load resulting compositions (mol/mol)
     file_1 = str(dirname) + '/output/compositions/csv/xy_03atm.csv'
-    file_2 = str(dirname) + '/output/compositions/csv/xy_04atm.csv'
     file_3 = str(dirname) + '/output/compositions/csv/xy_05atm.csv'
-    file_4 = str(dirname) + '/output/compositions/csv/xy_07atm.csv'
     file_5 = str(dirname) + '/output/compositions/csv/xy_10atm.csv'
-    file_6 = str(dirname) + '/output/compositions/csv/xy_12atm.csv'
     file_7 = str(dirname) + '/output/compositions/csv/xy_15atm.csv'
-    file_8 = str(dirname) + '/output/compositions/csv/xy_16atm.csv'
+    
 
                 
     df_03_atm = pd.read_csv(filepath_or_buffer=file_1, header=0)
@@ -1111,4 +1104,5 @@ def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool
     else: pass
     
     return [n_03atm, n_05atm, n_10atm, n_15atm]
+    
     
