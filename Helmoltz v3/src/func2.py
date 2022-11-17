@@ -32,16 +32,16 @@ def phi0(tau, d_r, species):
 
     if species == 'O2':
         d0 = 101325 / (r_c[species] * R_m[species] * 298.15)
-        phi_id = safe_log(d_r / d0) + OX[0] * tau ** 1.5 + OX[1] / tau ** 2 + OX[2] * mt.log(tau) \
+        phi_id = safe_log(d_r / d0) + OX[0] * tau ** 1.5 + OX[1] / tau ** 2 + OX[2] * safe_log(tau) \
                  + OX[3] * tau + OX[4] * safe_log(mp.exp(tau * OX[6]) - 1) + OX[5] \
-                 * mt.log(2 / 3 * mp.exp(-tau * OX[7]) + 1) + OX[8]
+                 * safe_log(2 / 3 * mp.exp(-tau * OX[7]) + 1) + OX[8]
     else:
         B = a[species][4] * tau ** (1 / 3) + a[species][5] / tau ** (3 / 2) + a[species][6] / tau ** (7 / 4)
         B0 = 0.
         for i in range(len(a0[species])):
             B0 = B0 + a0[species][i] * mp.log(1 - mp.exp(-tau * th0[species][i]))
 
-        phi_id = safe_log(d_r) + a[species][0] + a[species][1] * tau + a[species][2] * mt.log(tau) + a[species][3] * (
+        phi_id = safe_log(d_r) + a[species][0] + a[species][1] * tau + a[species][2] * safe_log(tau) + a[species][3] * (
                 T_c[species] / tau) ** 1.5 + B0 + B
 
     # Ideal-gas part of the dimensionless Helmholtz energy
@@ -839,7 +839,7 @@ def ln_phi(Z, A, B, phi):
     beta_1 = B * (1 + (2 ** 0.5))
     beta_2 = B * (1 - (2 ** 0.5))
 
-    return mt.log(phi) - (Z - 1 - alpha * mt.log((Z + beta_1) / (Z + beta_2)) - mt.log(Z - B))
+    return safe_log(phi) - (Z - 1 - alpha * safe_log((Z + beta_1) / (Z + beta_2)) - safe_log(Z - B))
 
  
 def fug_mix_helmoltz(specie, T, P):
@@ -958,6 +958,7 @@ def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool
 
     A = lks
     B = hk
+    print('molar flux evaluation...')
     print(f'low keys: {A}')
     print(f'high keys: {B}')
     
@@ -977,7 +978,6 @@ def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool
     } # atm
 
     # retrieve file path
-    
     # `cwd`: current directory
     dirname = Path.cwd()
        
@@ -993,76 +993,23 @@ def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool
 
                 
     df_03_atm = pd.read_csv(filepath_or_buffer=file_1, header=0)
-    df_04_atm = pd.read_csv(filepath_or_buffer=file_2, header=0)
     df_05_atm = pd.read_csv(filepath_or_buffer=file_3, header=0)
-    df_07_atm = pd.read_csv(filepath_or_buffer=file_4, header=0)
     df_10_atm = pd.read_csv(filepath_or_buffer=file_5, header=0)
-    df_12_atm = pd.read_csv(filepath_or_buffer=file_6, header=0)
     df_15_atm = pd.read_csv(filepath_or_buffer=file_7, header=0)
-    df_16_atm = pd.read_csv(filepath_or_buffer=file_8, header=0)
 
     y_H2O = {
         '03atm': df_03_atm['yH2O'],
-        '04atm': df_04_atm['yH2O'], 
         '05atm': df_05_atm['yH2O'], 
-        '07atm': df_07_atm['yH2O'], 
         '10atm': df_10_atm['yH2O'], 
-        '12atm': df_12_atm['yH2O'], 
         '15atm': df_15_atm['yH2O'], 
-        '16atm': df_16_atm['yH2O'], 
         }
 
     # phi = P_H2O(T)/Psat_H2O(T) = p*y_H2O(T,p)/Psat_H2O(T)
     phi = {
         '03atm': [p[0]*y_H2O['03atm'][i]/psat[B][i] for i in range(len(T))],
-        '04atm': [p[1]*y_H2O['04atm'][i]/psat[B][i] for i in range(len(T))],
-        '05atm': [p[2]*y_H2O['05atm'][i]/psat[B][i] for i in range(len(T))],
-        '07atm': [p[3]*y_H2O['07atm'][i]/psat[B][i] for i in range(len(T))],
-        '10atm': [p[4]*y_H2O['10atm'][i]/psat[B][i] for i in range(len(T))],
-        '12atm': [p[5]*y_H2O['12atm'][i]/psat[B][i] for i in range(len(T))],
-        '15atm': [p[6]*y_H2O['15atm'][i]/psat[B][i] for i in range(len(T))],
-        '16atm': [p[7]*y_H2O['16atm'][i]/psat[B][i] for i in range(len(T))],
-    }
-
-    N_03atm ={
-        A[0]: [molar_flux(p[0], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['03atm'][i]) for i in range(len(T))],
-        A[1]: [molar_flux(p[0], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['03atm'][i]) for i in range(len(T))],
-        A[2]: [molar_flux(p[0], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['03atm'][i]) for i in range(len(T))]
-    }
-    N_04atm ={
-        A[0]: [molar_flux(p[1], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['04atm'][i]) for i in range(len(T))],
-        A[1]: [molar_flux(p[1], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['04atm'][i]) for i in range(len(T))],
-        A[2]: [molar_flux(p[1], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['04atm'][i]) for i in range(len(T))]
-    }
-    N_05atm ={
-        A[0]: [molar_flux(p[2], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['05atm'][i]) for i in range(len(T))],
-        A[1]: [molar_flux(p[2], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['05atm'][i]) for i in range(len(T))],
-        A[2]: [molar_flux(p[2], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['05atm'][i]) for i in range(len(T))]
-    }
-    N_07atm ={
-        A[0]: [molar_flux(p[3], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['07atm'][i]) for i in range(len(T))],
-        A[1]: [molar_flux(p[3], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['07atm'][i]) for i in range(len(T))],
-        A[2]: [molar_flux(p[3], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['07atm'][i]) for i in range(len(T))]
-    }
-    N_10atm ={
-        A[0]: [molar_flux(p[4], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['10atm'][i]) for i in range(len(T))],
-        A[1]: [molar_flux(p[4], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['10atm'][i]) for i in range(len(T))],
-        A[2]: [molar_flux(p[4], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['10atm'][i]) for i in range(len(T))]
-    }
-    N_12atm ={
-        A[0]: [molar_flux(p[5], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['12atm'][i]) for i in range(len(T))],
-        A[1]: [molar_flux(p[5], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['12atm'][i]) for i in range(len(T))],
-        A[2]: [molar_flux(p[5], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['12atm'][i]) for i in range(len(T))]
-    }
-    N_15atm ={
-        A[0]: [molar_flux(p[6], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['15atm'][i]) for i in range(len(T))],
-        A[1]: [molar_flux(p[6], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['15atm'][i]) for i in range(len(T))],
-        A[2]: [molar_flux(p[6], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['15atm'][i]) for i in range(len(T))]
-    }
-    N_16atm ={
-        A[0]: [molar_flux(p[7], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['16atm'][i]) for i in range(len(T))],
-        A[1]: [molar_flux(p[7], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['16atm'][i]) for i in range(len(T))],
-        A[2]: [molar_flux(p[7], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['16atm'][i]) for i in range(len(T))]
+        '05atm': [p[1]*y_H2O['05atm'][i]/psat[B][i] for i in range(len(T))],
+        '10atm': [p[2]*y_H2O['10atm'][i]/psat[B][i] for i in range(len(T))],
+        '15atm': [p[3]*y_H2O['15atm'][i]/psat[B][i] for i in range(len(T))],
     }
 
     # molar fluxes evaluation (mol/m2)
@@ -1073,128 +1020,95 @@ def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool
         A[1]: [molar_flux(p[0], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['03atm'][i])*S for i in range(len(T))],
         A[2]: [molar_flux(p[0], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['03atm'][i])*S for i in range(len(T))]
     }
-    n_04atm ={
-        A[0]: [molar_flux(p[1], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['04atm'][i])*S for i in range(len(T))],
-        A[1]: [molar_flux(p[1], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['04atm'][i])*S for i in range(len(T))],
-        A[2]: [molar_flux(p[1], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['04atm'][i])*S for i in range(len(T))]
-    }
     n_05atm ={
-        A[0]: [molar_flux(p[2], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['05atm'][i])*S for i in range(len(T))],
-        A[1]: [molar_flux(p[2], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['05atm'][i])*S for i in range(len(T))],
-        A[2]: [molar_flux(p[2], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['05atm'][i])*S for i in range(len(T))]
-    }
-    n_07atm ={
-        A[0]: [molar_flux(p[3], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['07atm'][i])*S for i in range(len(T))],
-        A[1]: [molar_flux(p[3], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['07atm'][i])*S for i in range(len(T))],
-        A[2]: [molar_flux(p[3], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['07atm'][i])*S for i in range(len(T))]
+        A[0]: [molar_flux(p[1], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['05atm'][i])*S for i in range(len(T))],
+        A[1]: [molar_flux(p[1], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['05atm'][i])*S for i in range(len(T))],
+        A[2]: [molar_flux(p[1], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['05atm'][i])*S for i in range(len(T))]
     }
     n_10atm ={
-        A[0]: [molar_flux(p[4], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['10atm'][i])*S for i in range(len(T))],
-        A[1]: [molar_flux(p[4], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['10atm'][i])*S for i in range(len(T))],
-        A[2]: [molar_flux(p[4], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['10atm'][i])*S for i in range(len(T))]
-    }
-    n_12atm ={
-        A[0]: [molar_flux(p[5], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['12atm'][i])*S for i in range(len(T))],
-        A[1]: [molar_flux(p[5], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['12atm'][i])*S for i in range(len(T))],
-        A[2]: [molar_flux(p[5], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['12atm'][i])*S for i in range(len(T))]
+        A[0]: [molar_flux(p[2], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['10atm'][i])*S for i in range(len(T))],
+        A[1]: [molar_flux(p[2], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['10atm'][i])*S for i in range(len(T))],
+        A[2]: [molar_flux(p[2], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['10atm'][i])*S for i in range(len(T))]
     }
     n_15atm ={
-        A[0]: [molar_flux(p[6], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['15atm'][i])*S for i in range(len(T))],
-        A[1]: [molar_flux(p[6], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['15atm'][i])*S for i in range(len(T))],
-        A[2]: [molar_flux(p[6], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['15atm'][i])*S for i in range(len(T))]
+        A[0]: [molar_flux(p[3], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['15atm'][i])*S for i in range(len(T))],
+        A[1]: [molar_flux(p[3], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['15atm'][i])*S for i in range(len(T))],
+        A[2]: [molar_flux(p[3], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['15atm'][i])*S for i in range(len(T))]
     }
-    n_16atm ={
-        A[0]: [molar_flux(p[7], D[A[0]][i], R, T[i]+273, L, psat[A[0]][i], phi['16atm'][i])*S for i in range(len(T))],
-        A[1]: [molar_flux(p[7], D[A[1]][i], R, T[i]+273, L, psat[A[1]][i], phi['16atm'][i])*S for i in range(len(T))],
-        A[2]: [molar_flux(p[7], D[A[2]][i], R, T[i]+273, L, psat[A[2]][i], phi['16atm'][i])*S for i in range(len(T))]
-    }
-
-
     # visualization
     ms = 2
     lw = 0.75
 
     plt.figure(dpi=dpi)
-    plt.subplot(1,3,1)
     filename = 'absolute molar flux [mol/d]'
-    plt.plot(T, n_03atm[A[0]], marker='o', markersize=ms, linewidth=lw, label='P: $0.3\,atm$')
-    plt.plot(T, n_05atm[A[0]], marker='^', markersize=ms, linewidth=lw, label='P: $0.5\,atm$')
-    plt.plot(T, n_10atm[A[0]], marker='s', markersize=ms, linewidth=lw, label='P: $1.0\,atm$')
-    plt.plot(T, n_15atm[A[0]], marker='D', markersize=ms, linewidth=lw, label='P: $1.5\,atm$')
+    plt.plot(T, n_03atm[A[0]], marker='o', markersize=ms, linewidth=lw, label=f'P: ${Pres_atm[0]}\,atm$')
+    plt.plot(T, n_05atm[A[0]], marker='^', markersize=ms, linewidth=lw, label=f'P: ${Pres_atm[1]}\,atm$')
+    plt.plot(T, n_10atm[A[0]], marker='s', markersize=ms, linewidth=lw, label=f'P: ${Pres_atm[2]}\,atm$')
+    plt.plot(T, n_15atm[A[0]], marker='D', markersize=ms, linewidth=lw, label=f'P: ${Pres_atm[3]}\,atm$')
     plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
     plt.ylabel(filename)
     plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
     plt.title('CH$_4$')
 
-    plt.subplot(1,3,2)
-    plt.plot(T, n_03atm[A[1]], marker='o', markersize=ms, linewidth=lw, label='P: $0.3\,atm$')
-    plt.plot(T, n_05atm[A[1]], marker='^', markersize=ms, linewidth=lw, label='P: $0.5\,atm$')
-    plt.plot(T, n_10atm[A[1]], marker='s', markersize=ms, linewidth=lw, label='P: $1.0\,atm$')
-    plt.plot(T, n_15atm[A[1]], marker='D', markersize=ms, linewidth=lw, label='P: $1.5\,atm$')
+    plt.figure(dpi=dpi)
+    filename = 'absolute molar flux [mol/d]'
+    plt.ylabel(filename)
+    plt.plot(T, n_03atm[A[1]], marker='o', markersize=ms, linewidth=lw, label=f'P: ${Pres_atm[0]}\,atm$')
+    plt.plot(T, n_05atm[A[1]], marker='^', markersize=ms, linewidth=lw, label=f'P: ${Pres_atm[1]}\,atm$')
+    plt.plot(T, n_10atm[A[1]], marker='s', markersize=ms, linewidth=lw, label=f'P: ${Pres_atm[2]}\,atm$')
+    plt.plot(T, n_15atm[A[1]], marker='D', markersize=ms, linewidth=lw, label=f'P: ${Pres_atm[3]}\,atm$')
     plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
     plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-    plt.legend(loc='lower center', ncol=4, bbox_to_anchor=(0.5, -0.3))
     plt.title('CO$_2$')
 
-    plt.subplot(1,3,3)
-    plt.plot(T, n_03atm[A[2]],marker='o', markersize=ms, linewidth=lw, label='P: $0.3\,atm$')
-    plt.plot(T, n_05atm[A[2]],marker='^', markersize=ms, linewidth=lw, label='P: $0.5\,atm$')
-    plt.plot(T, n_10atm[A[2]],marker='s', markersize=ms, linewidth=lw, label='P: $1.0\,atm$')
-    plt.plot(T, n_15atm[A[2]],marker='D', markersize=ms, linewidth=lw, label='P: $1.5\,atm$')
+    plt.figure(dpi=dpi)
+    filename = 'absolute molar flux [mol/d]'
+    plt.ylabel(filename)
+    plt.plot(T, n_03atm[A[2]],marker='o', markersize=ms, linewidth=lw, label=f'P: ${Pres_atm[0]}\,atm$')
+    plt.plot(T, n_05atm[A[2]],marker='^', markersize=ms, linewidth=lw, label=f'P: ${Pres_atm[1]}\,atm$')
+    plt.plot(T, n_10atm[A[2]],marker='s', markersize=ms, linewidth=lw, label=f'P: ${Pres_atm[2]}\,atm$')
+    plt.plot(T, n_15atm[A[2]],marker='D', markersize=ms, linewidth=lw, label=f'P: ${Pres_atm[3]}\,atm$')
     plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
     plt.title('H$_2$S')
     plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-
-    plt.subplots_adjust(
-        top=0.88,
-        bottom=0.445,
-        left=0.115,
-        right=0.9,
-        hspace=0.2,
-        wspace=0.2
-    )
+    
+    plt.figure(dpi=dpi)
+    filename = 'absolute molar flux [mol/d]'
+    plt.ylabel(filename)
+    plt.plot(T, n_03atm[A[0]]/np.max(n_03atm[A[0]]),marker='o', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[0]}\,atm$')
+    plt.plot(T, n_05atm[A[0]]/np.max(n_05atm[A[0]]),marker='^', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[1]}\,atm$')
+    plt.plot(T, n_10atm[A[0]]/np.max(n_10atm[A[0]]),marker='s', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[2]}\,atm$')
+    plt.plot(T, n_15atm[A[0]]/np.max(n_15atm[A[0]]),marker='D', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[3]}\,atm$')
+    plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
+    plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+    plt.title('CH$_4$')
+    
+    plt.figure(dpi=dpi)
+    filename = 'absolute molar flux [mol/d]'
+    plt.ylabel(filename)
+    plt.plot(T, n_03atm[A[1]]/np.max(n_03atm[A[1]]),marker='o', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[0]}\,atm$')
+    plt.plot(T, n_05atm[A[1]]/np.max(n_05atm[A[1]]),marker='^', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[1]}\,atm$')
+    plt.plot(T, n_10atm[A[1]]/np.max(n_10atm[A[1]]),marker='s', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[2]}\,atm$')
+    plt.plot(T, n_15atm[A[1]]/np.max(n_15atm[A[1]]),marker='D', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[3]}\,atm$')
+    plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
+    plt.xlabel('temperature [°C]'); 
+    plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+    plt.title('CO$_2$')
 
     plt.figure(dpi=dpi)
-    plt.subplot(1,3,1)
-    filename = 'normalized molar flux [mol/d]'
-    plt.plot(T, n_03atm[A[0]]/np.max(n_03atm[A[0]]),marker='o', linewidth=lw, markersize=ms, label='P: $0.3\,atm$')
-    plt.plot(T, n_05atm[A[0]]/np.max(n_05atm[A[0]]),marker='^', linewidth=lw, markersize=ms, label='P: $0.5\,atm$')
-    plt.plot(T, n_10atm[A[0]]/np.max(n_10atm[A[0]]),marker='s', linewidth=lw, markersize=ms, label='P: $1.0\,atm$')
-    plt.plot(T, n_15atm[A[0]]/np.max(n_15atm[A[0]]),marker='D', linewidth=lw, markersize=ms, label='P: $1.5\,atm$')
-    plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
-    plt.xlabel('temperature [°C]'); plt.ylabel(filename)
-    plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-
-    plt.subplot(1,3,2)
-    plt.plot(T, n_03atm[A[1]]/np.max(n_03atm[A[1]]),marker='o', linewidth=lw, markersize=ms, label='P: $0.3\,atm$')
-    plt.plot(T, n_05atm[A[1]]/np.max(n_05atm[A[1]]),marker='^', linewidth=lw, markersize=ms, label='P: $0.5\,atm$')
-    plt.plot(T, n_10atm[A[1]]/np.max(n_10atm[A[1]]),marker='s', linewidth=lw, markersize=ms, label='P: $1.0\,atm$')
-    plt.plot(T, n_15atm[A[1]]/np.max(n_15atm[A[1]]),marker='D', linewidth=lw, markersize=ms, label='P: $1.5\,atm$')
-    plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
-    plt.xlabel('temperature [°C]'); 
-    plt.legend(loc='lower center', ncol=4, bbox_to_anchor=(0.5, -0.3))
-    plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-
-    plt.subplot(1,3,3)
-    plt.plot(T, n_03atm[A[2]]/np.max(n_03atm[A[2]]),marker='o', linewidth=lw, markersize=ms, label='P: $0.3\,atm$')
-    plt.plot(T, n_05atm[A[2]]/np.max(n_05atm[A[2]]),marker='^', linewidth=lw, markersize=ms, label='P: $0.5\,atm$')
-    plt.plot(T, n_10atm[A[2]]/np.max(n_10atm[A[2]]),marker='s', linewidth=lw, markersize=ms, label='P: $1.0\,atm$')
-    plt.plot(T, n_15atm[A[2]]/np.max(n_15atm[A[2]]),marker='D', linewidth=lw, markersize=ms, label='P: $1.5\,atm$')
+    filename = 'absolute molar flux [mol/d]'
+    plt.ylabel(filename)
+    plt.plot(T, n_03atm[A[2]]/np.max(n_03atm[A[2]]),marker='o', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[0]}\,atm$')
+    plt.plot(T, n_05atm[A[2]]/np.max(n_05atm[A[2]]),marker='^', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[1]}\,atm$')
+    plt.plot(T, n_10atm[A[2]]/np.max(n_10atm[A[2]]),marker='s', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[2]}\,atm$')
+    plt.plot(T, n_15atm[A[2]]/np.max(n_15atm[A[2]]),marker='D', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[3]}\,atm$')
     plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
     plt.xlabel('temperature [°C]'); 
     plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-
-    plt.subplots_adjust(
-        top=0.88,
-        bottom=0.445,
-        left=0.115,
-        right=0.9,
-        hspace=0.2,
-        wspace=0.2
-    )
+    plt.title('H$_2$S')
     
     if showbool == True: plt.show() 
     else: pass
     
-    return [n_03atm, n_04atm, n_05atm, n_07atm, n_10atm, n_12atm, n_15atm, n_16atm]
+    return [n_03atm, n_05atm, n_10atm, n_15atm]
     
