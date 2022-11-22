@@ -19,13 +19,13 @@ model(
     )
 
 mole_day(
-    lks = species[:-1], 
-    hk  = species[-1], 
-    Temp_degC = Temperature, 
+    lks = species[:-1],
+    hk  = species[-1],
+    Temp_degC = Temperature,
     Pres_atm  = Pressure,
-    Height   = L, 
+    Height   = L,
     Diameter = d,
-    showbool=True
+    showbool=False
     )
 t2 = time.time()
 

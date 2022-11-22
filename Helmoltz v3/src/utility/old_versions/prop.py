@@ -57,7 +57,6 @@ R_m = {
     'H2S': 243.961815,
     'H2O': 461.51805
 } # J*kg^(-1)*K^(-1)
-                 
 # Universal gas constant
 R = 8.31446262               # In units of J*mol^(-1)*K^(-1)
 

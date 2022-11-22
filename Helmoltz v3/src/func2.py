@@ -13,12 +13,12 @@ warnings.filterwarnings('ignore')
 
 dps = 5
 
- 
+
 def phi0(tau, d_r, species):
     """
     #--------------------------------------------------
-    # Function describing the Ideal-gas part of 
-    # the dimensionless Helmholtz energy 
+    # Function describing the Ideal-gas part of
+    # the dimensionless Helmholtz energy
     # d_r = reduced density (rho/rho_crit)
     # tau = inverse reduced temperature (Tcrit/T)
     # rho in Kg*m^(-3)
@@ -45,7 +45,7 @@ def phi0(tau, d_r, species):
     # Ideal-gas part of the dimensionless Helmholtz energy
     return phi_id
 
- 
+
 def phiR(tau, d_r, species):
     """
     #--------------------------------------------------------
@@ -90,7 +90,7 @@ def phiR(tau, d_r, species):
         # Dimensionless Helmholtz energy
     return (sum1 + sum2 + sum3 + sum4)
 
- 
+
 def Phi(tau, d_r, species):
     """
     #--------------------------------------------------------
@@ -102,14 +102,14 @@ def Phi(tau, d_r, species):
     #--------------------------------------------------------
     """
 
-    # Ideal and residual part of the Helmholtz energy 
+    # Ideal and residual part of the Helmholtz energy
     Id_term = phi0(tau, d_r, species)
     Res_term = phiR(tau, d_r, species)
 
     # Dimensionless Helmholtz energy
     return (Id_term + Res_term)
 
- 
+
 def dphi0_t(tau, species):
     """
     #----------------------------------------------
@@ -138,7 +138,7 @@ def dphi0_t(tau, species):
     # Derivative of the Ideal-gas part of the Helmholtz energy with respect to tau
     return dp_id
 
- 
+
 def dphi0_tt(tau, species):
     """
     #-----------------------------------------------
@@ -167,7 +167,7 @@ def dphi0_tt(tau, species):
     # Derivative of dphi0_t with respect to tau
     return d2p_id
 
- 
+
 def dphir_t(tau, d_r, species):
     """
     #---------------------------------------------
@@ -215,7 +215,7 @@ def dphir_t(tau, d_r, species):
     # Derivative of the residual part of the Helmholtz energy with respect to tau
     return (sum1 + sum2 + sum3 + sum4)
 
- 
+
 def dphir_tt(tau, d_r, species):
     """
     #-----------------------------------------------
@@ -267,11 +267,11 @@ def dphir_tt(tau, d_r, species):
     # Derivative of dphir_t energy with respect to tau
     return (sum1 + sum2 + sum3 + sum4)
 
- 
+
 def dphi_r(d_r, tau, species):
     """
     #-----------------------------------------
-    # Function describing the derivative of 
+    # Function describing the derivative of
     # the residual part of the Helmholtz
     # energy with respect to reduced density
     #------------------------------------------
@@ -316,11 +316,11 @@ def dphi_r(d_r, tau, species):
     # Derivative of the residual part of the Helmholtz energy with respect to reduced density
     return (sum1 + sum2 + sum3 + sum4)
 
- 
+
 def d2phi_r(d_r, tau, species):
     """
     #-----------------------------------------
-    # Function describing the derivative of 
+    # Function describing the derivative of
     # dphi_r with respect to reduced density
     #-----------------------------------------
     """
@@ -382,11 +382,11 @@ def d2phi_r(d_r, tau, species):
 
     return (sum1 + sum2 + sum3 + sum4)
 
- 
+
 def dphir_rt(tau, d_r, species):
     """
     #----------------------------------------------
-    # Function describing the derivative of dphi_r 
+    # Function describing the derivative of dphi_r
     # with respect to inverse reduced temperature
     #---------------------------------------------
     """
@@ -444,7 +444,7 @@ def dphir_rt(tau, d_r, species):
     # Derivative of dphi_r with respect to tau
     return (sum1 + sum2 + sum3 + sum4)
 
- 
+
 def VLProperties(q, T, d, species):
     """
     #--------------------------------------------
@@ -498,7 +498,7 @@ def VLProperties(q, T, d, species):
         return phi_coef
 # ------------------------------------------------------------------------------------------------------
 
- 
+
 def density(x0, T, P, species):
     """
     #----------------------------------------------
@@ -524,7 +524,7 @@ def density(x0, T, P, species):
 
     return x
 
- 
+
 def rho(x, T, P, species):
     """
     #---------------------------------------------------
@@ -550,7 +550,7 @@ def rho(x, T, P, species):
     # -----------------------------------------------------
     return x * R_m[species] * T * (1 + d_r * dphi) - P
 
- 
+
 def drho(x, T, P, species):
     """
     #-----------------------------------------------
@@ -576,7 +576,7 @@ def drho(x, T, P, species):
     # ------------------------------------------------------
     return R_m[species] * T * (1 + 2 * d_r * dphi + (d_r ** 2) * ddphi_r)
 
- 
+
 def Antoine(x, T):
     '''
     Normal Antoine Equation
@@ -588,7 +588,7 @@ def Antoine(x, T):
     '''
     return (10 ** (x[0] - x[1] / (T + x[2]))) * 0.986923
 
- 
+
 def Henry(x, T):
     '''
     Extended Henry's Equation
@@ -600,7 +600,7 @@ def Henry(x, T):
     '''
     return np.exp(x[0] + x[1] / T + x[2] * np.log(T) + x[3] * T)
 
- 
+
 def RR(alpha, z, k):
     '''
     Rachford-Rice equation, solution
@@ -614,14 +614,14 @@ def RR(alpha, z, k):
     '''
     zdk = np.empty(shape=(len(z),))
     dk = np.empty(shape=(len(z),))
-    
+
     for i in range(len(z)):
         dk[i] = (k[i] - 1)
         zdk[i] = z[i] * dk[i]
 
     return sum(zdk / (1 + alpha * dk))
 
- 
+
 def root_Zed(w, Tcr, Pcr, P, T, Psat, display=False, u=2, v=-1):
     '''
     Find the compressibility factor
@@ -698,7 +698,7 @@ def root_Zed(w, Tcr, Pcr, P, T, Psat, display=False, u=2, v=-1):
 
     return Zed_
 
- 
+
 def flash(u, z, Psat, H, P, phi_V_sat, phi_V):
     '''
     sysmple flash system 7x7 for
@@ -724,7 +724,7 @@ def flash(u, z, Psat, H, P, phi_V_sat, phi_V):
 
     return eq
 
- 
+
 def fug_coef_PR(Zed, w, Tcr, Pcr, P, T):
     '''
     evaluation of the fugacity coeffcient
@@ -763,7 +763,7 @@ def fug_coef_PR(Zed, w, Tcr, Pcr, P, T):
         pass
     return phi
 
- 
+
 def mix_coeff(z, w, Tcr, Pcr, T):
     # Parameter evaluation
     Rgas = 0.082057338  # L*atm/K/mol
@@ -786,7 +786,7 @@ def mix_coeff(z, w, Tcr, Pcr, T):
 
     return [a, b]
 
- 
+
 def fug_mix_PR(Zed, w, Tcr, Pcr, P, T, amix, bmix):
     '''
     evaluation of the fugacity mixture coeffcient
@@ -831,7 +831,7 @@ def fug_mix_PR(Zed, w, Tcr, Pcr, P, T, amix, bmix):
         pass
     return phi_mix
 
- 
+
 def ln_phi(Z, A, B, phi):
     alpha = -A / (2 * (2 ** 0.5) * B)
     beta_1 = B * (1 + (2 ** 0.5))
@@ -839,7 +839,7 @@ def ln_phi(Z, A, B, phi):
 
     return safe_log(phi) - (Z - 1 - alpha * safe_log((Z + beta_1) / (Z + beta_2)) - safe_log(Z - B))
 
- 
+
 def fug_mix_helmoltz(specie, T, P):
     # importing necessary parameters
     from prop2 import T_c, P_c, w, Ant
@@ -889,10 +889,10 @@ def fug_mix_helmoltz(specie, T, P):
     phi_mix_cubic = fug_mix_PR(Z0, w, T_c, P_c, P, T, mix_whole['a'], mix_whole['b'])  # T[K], P[atm]
 
     return phi_mix[0]
- 
+
 def dPsatdT(Psat, T):
     """
-    Evaluate the rate of change of the vapour pressure 
+    Evaluate the rate of change of the vapour pressure
     against the temperature: dPast/dT
     Psat: array
     T: array
@@ -902,19 +902,19 @@ def dPsatdT(Psat, T):
     for i in range(1, len(Psat)):
         rate[i] = (Psat[i-1] - Psat[i])/(T[i-1] - T[i])
     return rate
- 
+
 def volat_y(y):
     """
-    Evaluate the volatility of a species 
+    Evaluate the volatility of a species
     in a binary mixture from its composition
     y: array of composition in gas phase
     return: volatility of that species
     """
     return y/(1-y)
- 
+
 def volat_Psat(Psat_A, Psat_B):
     """
-    Evaluate the volatility of a species 
+    Evaluate the volatility of a species
     in a binary mixture from its vapour pressure
     against the vapour pressure of a referenced one
     Psat_A: vapour pressure of interested species
@@ -927,7 +927,7 @@ def volat_Psat(Psat_A, Psat_B):
 # safe log function
 def safe_log(x):
     from math import log
-    if x == 0: return   0
+    if x <= 0: return   0
     else: return log(x)
 
 # molar flux (mol/m2/d) function
@@ -940,7 +940,7 @@ def water_viscosity(T_K: float):
     B = 247.8 # K
     C = 140 # K
     return A * 10**(B/(T_K - C))
- 
+
 def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool=False):
 
     dpi = 250
@@ -957,7 +957,7 @@ def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool
     print('molar flux evaluation...')
     print(f'low keys: {A}')
     print(f'high keys: {B}')
-    
+
    # diffusion coefficients for i species in water (m2/s)
     D = {
         A[0]: [(0.0295*T[i] + 1.1246)*10**(-9) for i in range(len(T))], # Moradi et al., 2020
@@ -976,15 +976,15 @@ def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool
     # retrieve file path
     # `cwd`: current directory
     dirname = Path.cwd()
-       
+
     # load resulting compositions (mol/mol)
     file_1 = str(dirname) + '/output/compositions/csv/xy_03atm.csv'
     file_3 = str(dirname) + '/output/compositions/csv/xy_05atm.csv'
     file_5 = str(dirname) + '/output/compositions/csv/xy_10atm.csv'
     file_7 = str(dirname) + '/output/compositions/csv/xy_15atm.csv'
-    
 
-                
+
+
     df_03_atm = pd.read_csv(filepath_or_buffer=file_1, header=0)
     df_05_atm = pd.read_csv(filepath_or_buffer=file_3, header=0)
     df_10_atm = pd.read_csv(filepath_or_buffer=file_5, header=0)
@@ -992,9 +992,9 @@ def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool
 
     y_H2O = {
         '03atm': df_03_atm['yH2O'],
-        '05atm': df_05_atm['yH2O'], 
-        '10atm': df_10_atm['yH2O'], 
-        '15atm': df_15_atm['yH2O'], 
+        '05atm': df_05_atm['yH2O'],
+        '10atm': df_10_atm['yH2O'],
+        '15atm': df_15_atm['yH2O'],
         }
 
     # phi = P_H2O(T)/Psat_H2O(T) = p*y_H2O(T,p)/Psat_H2O(T)
@@ -1064,7 +1064,7 @@ def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool
     plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
     plt.title('H$_2$S')
     plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-    
+
     plt.figure(dpi=dpi)
     filename = 'absolute molar flux [mol/d]'
     plt.ylabel(filename)
@@ -1075,7 +1075,7 @@ def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool
     plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
     plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
     plt.title('CH$_4$')
-    
+
     plt.figure(dpi=dpi)
     filename = 'absolute molar flux [mol/d]'
     plt.ylabel(filename)
@@ -1084,7 +1084,7 @@ def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool
     plt.plot(T, n_10atm[A[1]]/np.max(n_10atm[A[1]]),marker='s', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[2]}\,atm$')
     plt.plot(T, n_15atm[A[1]]/np.max(n_15atm[A[1]]),marker='D', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[3]}\,atm$')
     plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
-    plt.xlabel('temperature [°C]'); 
+    plt.xlabel('temperature [°C]');
     plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
     plt.title('CO$_2$')
 
@@ -1096,13 +1096,12 @@ def mole_day(lks: list, hk: str, Temp_degC, Pres_atm, Height, Diameter, showbool
     plt.plot(T, n_10atm[A[2]]/np.max(n_10atm[A[2]]),marker='s', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[2]}\,atm$')
     plt.plot(T, n_15atm[A[2]]/np.max(n_15atm[A[2]]),marker='D', linewidth=lw, markersize=ms, label=f'P: ${Pres_atm[3]}\,atm$')
     plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
-    plt.xlabel('temperature [°C]'); 
+    plt.xlabel('temperature [°C]');
     plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
     plt.title('H$_2$S')
-    
-    if showbool == True: plt.show() 
+
+    if showbool == True: plt.show()
     else: pass
-    
+
     return [n_03atm, n_05atm, n_10atm, n_15atm]
-    
-    
+
