@@ -7,7 +7,7 @@ from prop import Ant
 from sklearn.preprocessing import MinMaxScaler
 
 plt.style.use(['science', 'no-latex'])
-dpi = 180
+dpi = 200
 scaler = MinMaxScaler()
 
 # evaluate the molar flux of a species ina binary mixture (A-W) where:
@@ -64,13 +64,13 @@ df_16_atm = pd.read_csv(filepath_or_buffer='output/compositions/csv/xy_16atm.csv
 
 y_H2O = {
     '03atm': df_03_atm['yH2O'],
-    '04atm': df_04_atm['yH2O'], 
-    '05atm': df_05_atm['yH2O'], 
-    '07atm': df_07_atm['yH2O'], 
-    '10atm': df_10_atm['yH2O'], 
-    '12atm': df_12_atm['yH2O'], 
-    '15atm': df_15_atm['yH2O'], 
-    '16atm': df_16_atm['yH2O'], 
+    '04atm': df_04_atm['yH2O'],
+    '05atm': df_05_atm['yH2O'],
+    '07atm': df_07_atm['yH2O'],
+    '10atm': df_10_atm['yH2O'],
+    '12atm': df_12_atm['yH2O'],
+    '15atm': df_15_atm['yH2O'],
+    '16atm': df_16_atm['yH2O'],
     }
 
 # phi = P_H2O(T)/Psat_H2O(T) = p*y_H2O(T,p)/Psat_H2O(T)
@@ -176,7 +176,7 @@ ms = 2
 lw = 0.75
 
 plt.figure(dpi=dpi)
-plt.subplot(1,3,1)
+plt.subplot(2,3,1)
 filename = 'absolute molar flux [mol/d]'
 plt.plot(T, n_03atm[A[0]], marker='o', markersize=ms, linewidth=lw, label='P: $0.3\,atm$')
 plt.plot(T, n_05atm[A[0]], marker='^', markersize=ms, linewidth=lw, label='P: $0.5\,atm$')
@@ -187,17 +187,16 @@ plt.ylabel(filename)
 plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
 plt.title('CH$_4$')
 
-plt.subplot(1,3,2)
+plt.subplot(2,3,2)
 plt.plot(T, n_03atm[A[1]], marker='o', markersize=ms, linewidth=lw, label='P: $0.3\,atm$')
 plt.plot(T, n_05atm[A[1]], marker='^', markersize=ms, linewidth=lw, label='P: $0.5\,atm$')
 plt.plot(T, n_10atm[A[1]], marker='s', markersize=ms, linewidth=lw, label='P: $1.0\,atm$')
 plt.plot(T, n_15atm[A[1]], marker='D', markersize=ms, linewidth=lw, label='P: $1.5\,atm$')
 plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
 plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-plt.legend(loc='lower center', ncol=4, bbox_to_anchor=(0.5, -0.3))
 plt.title('CO$_2$')
 
-plt.subplot(1,3,3)
+plt.subplot(2,3,3)
 plt.plot(T, n_03atm[A[2]],marker='o', markersize=ms, linewidth=lw, label='P: $0.3\,atm$')
 plt.plot(T, n_05atm[A[2]],marker='^', markersize=ms, linewidth=lw, label='P: $0.5\,atm$')
 plt.plot(T, n_10atm[A[2]],marker='s', markersize=ms, linewidth=lw, label='P: $1.0\,atm$')
@@ -206,95 +205,35 @@ plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
 plt.title('H$_2$S')
 plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
 
-plt.subplots_adjust(
-    top=0.88,
-    bottom=0.445,
-    left=0.115,
-    right=0.9,
-    hspace=0.2,
-    wspace=0.2
-)
-
-plt.figure(dpi=dpi)
-plt.subplot(1,3,1)
+plt.subplot(2,3,4)
 filename = 'normalized molar flux [mol/d]'
 plt.plot(T, n_03atm[A[0]]/np.max(n_03atm[A[0]]),marker='o', linewidth=lw, markersize=ms, label='P: $0.3\,atm$')
 plt.plot(T, n_05atm[A[0]]/np.max(n_05atm[A[0]]),marker='^', linewidth=lw, markersize=ms, label='P: $0.5\,atm$')
 plt.plot(T, n_10atm[A[0]]/np.max(n_10atm[A[0]]),marker='s', linewidth=lw, markersize=ms, label='P: $1.0\,atm$')
 plt.plot(T, n_15atm[A[0]]/np.max(n_15atm[A[0]]),marker='D', linewidth=lw, markersize=ms, label='P: $1.5\,atm$')
 plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
-plt.xlabel('temperature [°C]'); plt.ylabel(filename)
+plt.xlabel('T [°C]'); plt.ylabel(filename)
 plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
 
-plt.subplot(1,3,2)
+plt.subplot(2,3,5)
 plt.plot(T, n_03atm[A[1]]/np.max(n_03atm[A[1]]),marker='o', linewidth=lw, markersize=ms, label='P: $0.3\,atm$')
 plt.plot(T, n_05atm[A[1]]/np.max(n_05atm[A[1]]),marker='^', linewidth=lw, markersize=ms, label='P: $0.5\,atm$')
 plt.plot(T, n_10atm[A[1]]/np.max(n_10atm[A[1]]),marker='s', linewidth=lw, markersize=ms, label='P: $1.0\,atm$')
 plt.plot(T, n_15atm[A[1]]/np.max(n_15atm[A[1]]),marker='D', linewidth=lw, markersize=ms, label='P: $1.5\,atm$')
 plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
-plt.xlabel('temperature [°C]'); 
-plt.legend(loc='lower center', ncol=4, bbox_to_anchor=(0.5, -0.3))
+plt.xlabel('T [°C]')
 plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
 
-plt.subplot(1,3,3)
+plt.subplot(2,3,6)
 plt.plot(T, n_03atm[A[2]]/np.max(n_03atm[A[2]]),marker='o', linewidth=lw, markersize=ms, label='P: $0.3\,atm$')
 plt.plot(T, n_05atm[A[2]]/np.max(n_05atm[A[2]]),marker='^', linewidth=lw, markersize=ms, label='P: $0.5\,atm$')
 plt.plot(T, n_10atm[A[2]]/np.max(n_10atm[A[2]]),marker='s', linewidth=lw, markersize=ms, label='P: $1.0\,atm$')
 plt.plot(T, n_15atm[A[2]]/np.max(n_15atm[A[2]]),marker='D', linewidth=lw, markersize=ms, label='P: $1.5\,atm$')
 plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
-plt.xlabel('temperature [°C]'); 
+plt.xlabel('T [°C]')
 plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
 
-plt.subplots_adjust(
-    top=0.88,
-    bottom=0.445,
-    left=0.115,
-    right=0.9,
-    hspace=0.2,
-    wspace=0.2
-)
-
-
-plt.figure(dpi=dpi)
-plt.subplot(1,3,1)
-filename = 'scaled (min-max) molar flux [mol/d]'
-plt.plot(T, scaler.fit_transform((n_03atm[A[0]]/np.max(n_03atm[A[0]])).reshape(-1,1)) ,marker='o', linewidth=lw, markersize=ms, label='P: $0.3\,atm$')
-plt.plot(T, scaler.fit_transform((n_05atm[A[0]]/np.max(n_05atm[A[0]])).reshape(-1,1)) ,marker='^', linewidth=lw, markersize=ms, label='P: $0.5\,atm$')
-plt.plot(T, scaler.fit_transform((n_10atm[A[0]]/np.max(n_10atm[A[0]])).reshape(-1,1)) ,marker='s', linewidth=lw, markersize=ms, label='P: $1.0\,atm$')
-plt.plot(T, scaler.fit_transform((n_15atm[A[0]]/np.max(n_15atm[A[0]])).reshape(-1,1)) ,marker='D', linewidth=lw, markersize=ms, label='P: $1.5\,atm$')
-plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
-plt.xlabel('temperature [°C]'); plt.ylabel(filename)
-plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-plt.title('CH$_4$')
-
-plt.subplot(1,3,2)
-plt.plot(T, scaler.fit_transform((n_03atm[A[1]]/np.max(n_03atm[A[1]])).reshape(-1,1)),marker='o', linewidth=lw, markersize=ms, label='P: $0.3\,atm$')
-plt.plot(T, scaler.fit_transform((n_05atm[A[1]]/np.max(n_05atm[A[1]])).reshape(-1,1)),marker='^', linewidth=lw, markersize=ms, label='P: $0.5\,atm$')
-plt.plot(T, scaler.fit_transform((n_10atm[A[1]]/np.max(n_10atm[A[1]])).reshape(-1,1)),marker='s', linewidth=lw, markersize=ms, label='P: $1.0\,atm$')
-plt.plot(T, scaler.fit_transform((n_15atm[A[1]]/np.max(n_15atm[A[1]])).reshape(-1,1)),marker='D', linewidth=lw, markersize=ms, label='P: $1.5\,atm$')
-plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
-plt.xlabel('temperature [°C]'); 
-plt.title('CO$_2$')
-plt.legend(loc='lower center', ncol=4, bbox_to_anchor=(0.5, -0.3))
-plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-
-plt.subplot(1,3,3)
-plt.plot(T, scaler.fit_transform((n_03atm[A[2]]/np.max(n_03atm[A[2]])).reshape(-1,1)),marker='o', linewidth=lw, markersize=ms, label='P: $0.3\,atm$')
-plt.plot(T, scaler.fit_transform((n_05atm[A[2]]/np.max(n_05atm[A[2]])).reshape(-1,1)),marker='^', linewidth=lw, markersize=ms, label='P: $0.5\,atm$')
-plt.plot(T, scaler.fit_transform((n_10atm[A[2]]/np.max(n_10atm[A[2]])).reshape(-1,1)),marker='s', linewidth=lw, markersize=ms, label='P: $1.0\,atm$')
-plt.plot(T, scaler.fit_transform((n_15atm[A[2]]/np.max(n_15atm[A[2]])).reshape(-1,1)),marker='D', linewidth=lw, markersize=ms, label='P: $1.5\,atm$')
-plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
-plt.title('H$_2$S')
-plt.xlabel('temperature [°C]')
-plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-
-plt.subplots_adjust(
-    top=0.88,
-    bottom=0.445,
-    left=0.115,
-    right=0.9,
-    hspace=0.2,
-    wspace=0.2
-)
+manager = plt.get_current_fig_manager()
+manager.full_screen_toggle()
+plt.savefig('molarflux.svg', dpi=dpi)
 plt.show()

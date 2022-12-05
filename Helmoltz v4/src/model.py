@@ -120,6 +120,7 @@ def model(Temperature, Pressure, species):
                 eps = {key: np.abs(x_guess[key] - y[key]) for key in species}
                 epsilon = np.mean(list(eps.values()))
                 print(f"T:{T-273}°C | P:{P/101325} atm | eps: {epsilon}")
+                print(fuga_m)
                 x_guess = y
 
             # array allocation of pressure(j)-temperature(i) dependent variables
@@ -232,7 +233,7 @@ def model(Temperature, Pressure, species):
     axes.set_ylim(0.003, 0.02)
     plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-    axes.legend(loc='best')
+    #axes.legend(loc='best')
 
     path_for_figures = '/output/VLE figures/'
     file = 'alpha_TP_plot.svg'
@@ -265,7 +266,7 @@ def model(Temperature, Pressure, species):
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(min(Liq_TP[0]) - 2, F)
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-    axes.legend(loc='best')
+    #axes.legend(loc='best')
 
     file = 'V_L_TP_plot_2.svg'
     filename = str(cwd) + path_for_figures + file
@@ -299,7 +300,7 @@ def model(Temperature, Pressure, species):
     axes.set_ylim(min(x_CO2[0]), max(x_CO2[len(Pressure)-1]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-2, 0))
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-    axes.legend(loc='best')
+    #axes.legend(loc='best')
 
     file = 'x_y_TP_xCO2_plot.svg'
     filename = str(cwd) + path_for_figures + file
@@ -396,7 +397,7 @@ def model(Temperature, Pressure, species):
     axes.set_ylim(min(y_H2O[len(Pressure)-1]), max(y_H2O[0]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
-    axes.legend(loc='best')
+    #axes.legend(loc='best')
 
     file = 'x_y_TP_yH2O_plot.svg'
     filename = str(cwd) + path_for_figures + file

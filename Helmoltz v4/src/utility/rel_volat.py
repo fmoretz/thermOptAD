@@ -10,7 +10,7 @@ import matplotlib
 
 # matplotlib.rcParams.update({'font.size': 20, 'font.family': 'STIXGeneral', 'mathtext.fontset': 'stix'})
 # matplotlib.rcParams['font.sans-serif'] = "Arial"
-plt.style.use(['science', 'no-latex', 'ieee'])
+plt.style.use(['science', 'no-latex'])
 
 # Evaluate the relative volatility of these components at different temperature ranges
 Temperature = [25, 35, 45, 55]  # °C
@@ -45,23 +45,28 @@ dPsat = {
 }
 
 dpi = 300
-# plt.figure(dpi=dpi)
-# plt.plot(Temperature, rel_vol['CH4'], linewidth=2, color='black', label='CH$_4$')
-# plt.plot(Temperature, rel_vol['CO2'], linewidth=2, color='red', label='CO$_2$')
-# plt.plot(Temperature, rel_vol['H2S'], linewidth=2, color='orange', label='H$_2$S')
-# plt.xlabel('Temperature [°C]')
-# plt.ylabel('Adimensional relative volatility ($\\alpha$) [--]')
-# plt.legend()
-# plt.grid(color='k', alpha=0.8, linestyle='dashed', linewidth=0.8)
+plt.figure(dpi=dpi)
+plt.plot(Temperature, rel_vol['CH4'], linewidth=1, label='CH$_4$')
+plt.plot(Temperature, rel_vol['CO2'], linewidth=1, label='CO$_2$')
+plt.plot(Temperature, rel_vol['H2S'], linewidth=1, label='H$_2$S')
+plt.xlabel('T [°C]')
+plt.ylabel('relative volatility [--]')
+#plt.legend()
+plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+filename = 'volatility.png'
+plt.savefig(filename, dpi = dpi)
 
 plt.figure(dpi=dpi)
-plt.plot(Temperature, dPsat['CH4']/np.max(dPsat['CH4']), linewidth=2, color='black', label='CH$_4$')
-plt.plot(Temperature, dPsat['CO2']/np.max(dPsat['CO2']), linewidth=2, color='red', label='CO$_2$')
-plt.plot(Temperature, dPsat['H2S']/np.max(dPsat['H2S']), linewidth=2, color='orange', label='H$_2$S')
-plt.plot(Temperature, dPsat['H2O']/np.max(dPsat['H2O']), linewidth=2, color='blue', label='H$_2$O')
-plt.xlabel('Temperature [°C]')
-plt.ylabel('Rate of change ($dP_{sat}/dT$) [Pa/°C]')
-plt.legend()
+plt.plot(Temperature, dPsat['CH4']/np.max(dPsat['CH4']), linewidth=1, label='CH$_4$')
+plt.plot(Temperature, dPsat['CO2']/np.max(dPsat['CO2']), linewidth=1, label='CO$_2$')
+plt.plot(Temperature, dPsat['H2S']/np.max(dPsat['H2S']), linewidth=1, label='H$_2$S')
+plt.plot(Temperature, dPsat['H2O']/np.max(dPsat['H2O']), linewidth=1, label='H$_2$O')
+plt.xlabel('T [°C]')
+plt.ylabel('Rate of change [Pa/°C]')
+#plt.legend()
 plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+
+filename = 'rate_of_change.png'
+plt.savefig(filename, dpi = dpi)
 
 plt.show()
