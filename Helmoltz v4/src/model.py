@@ -48,8 +48,8 @@ def model(Temperature, Pressure, species):
             Psat       = {key: 0 for key in species}  # Pa
             dens_L     = {key: 0 for key in species}  # kg * m^(-3)
             dens_V     = {key: 0 for key in species}  # kg * m^(-3)
-            x          = {key: 0 for key in species}  # mol/mol
-            y          = {key: 0 for key in species}  # mol/mol
+            x          = {key: 0 for key in species}  # --
+            y          = {key: 0 for key in species}  # --
             Lx         = {key: 0 for key in species}  # kmol/d
             Vy         = {key: 0 for key in species}  # kmol/d
 
@@ -228,7 +228,7 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, alpha_TP[2], marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, alpha_TP[3], marker='D', markersize=ms, linewidth=lw, label=labels[3])
     axes.set_xlabel(Temp_label)
-    axes.set_ylabel(r"$\mathrm{\alpha\,[--]}$")
+    axes.set_ylabel(r"$\mathrm{\gamma\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(0.003, 0.02)
     plt.ticklabel_format(axis='y', style='sci', scilimits=[-2, 0])
@@ -279,7 +279,7 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, x_CH4[2],  marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, x_CH4[3],  marker='D', markersize=ms, linewidth=lw, label=labels[3])
     axes.set_xlabel(Temp_label)
-    axes.set_ylabel(r"$\mathrm{x_{CH_4}\,[mol/mol]}$")
+    axes.set_ylabel(r"$\mathrm{x_{CH_4}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(min(x_CH4[0]), max(x_CH4[len(Pressure)-1]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-2, 0))
@@ -295,7 +295,7 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, x_CO2[2],  marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, x_CO2[3],  marker='D', markersize=ms, linewidth=lw, label=labels[3])
     axes.set_xlabel(Temp_label)
-    axes.set_ylabel(r"$\mathrm{x_{CO_2}\,[mol/mol]}$")
+    axes.set_ylabel(r"$\mathrm{x_{CO_2}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(min(x_CO2[0]), max(x_CO2[len(Pressure)-1]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-2, 0))
@@ -312,7 +312,7 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, x_H2S[2],  marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, x_H2S[3],  marker='D', markersize=ms, linewidth=lw, label=labels[3])
     axes.set_xlabel(Temp_label)
-    axes.set_ylabel(r"$\mathrm{x_{H_2S}\,[mol/mol]}$")
+    axes.set_ylabel(r"$\mathrm{x_{H_2S}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(min(x_H2S[0]), max(x_H2S[len(Pressure)-1]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-4, 4))
@@ -328,7 +328,7 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, x_H2O[2],  marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, x_H2O[3],  marker='D', markersize=ms, linewidth=lw, label=labels[3])
     axes.set_xlabel(Temp_label)
-    axes.set_ylabel(r"$\mathrm{x_{H_2O}\,[mol/mol]}$")
+    axes.set_ylabel(r"$\mathrm{x_{H_2O}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(min(x_H2O[len(Pressure)-1]), 1)
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
@@ -344,7 +344,7 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, y_CH4[2],  marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, y_CH4[3],  marker='D', markersize=ms, linewidth=lw, label=labels[3])
     axes.set_xlabel(Temp_label)
-    axes.set_ylabel(r"$\mathrm{y_{CH_4}\,[mol/mol]}$")
+    axes.set_ylabel(r"$\mathrm{y_{CH_4}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(min(y_CH4[0]), max(y_CH4[len(Pressure)-1]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
@@ -360,7 +360,7 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, y_CO2[2],  marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, y_CO2[3],  marker='D', markersize=ms, linewidth=lw, label=labels[3])
     axes.set_xlabel(Temp_label)
-    axes.set_ylabel(r"$\mathrm{y_{CO_2}\,[mol/mol]}$")
+    axes.set_ylabel(r"$\mathrm{y_{CO_2}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(min(y_CO2[0]), max(y_CO2[len(Pressure)-1]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
@@ -376,7 +376,7 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, y_H2S[2],  marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, y_H2S[3],  marker='D', markersize=ms, linewidth=lw, label=labels[3])
     axes.set_xlabel(Temp_label)
-    axes.set_ylabel(r"$\mathrm{y_{H_2S}\,[mol/mol]}$")
+    axes.set_ylabel(r"$\mathrm{y_{H_2S}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(min(y_H2S[len(Pressure)-1]), max(y_H2S[0]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-2, 2))
@@ -392,7 +392,7 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, y_H2O[2],  marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, y_H2O[3],  marker='D', markersize=ms, linewidth=lw, label=labels[3])
     axes.set_xlabel(Temp_label)
-    axes.set_ylabel(r"$\mathrm{y_{H_2O}\,[mol/mol]}$")
+    axes.set_ylabel(r"$\mathrm{y_{H_2O}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(min(y_H2O[len(Pressure)-1]), max(y_H2O[0]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
