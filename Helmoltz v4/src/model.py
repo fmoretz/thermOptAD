@@ -119,8 +119,8 @@ def model(Temperature, Pressure, species):
 
                 eps = {key: np.abs(x_guess[key] - y[key]) for key in species}
                 epsilon = np.mean(list(eps.values()))
-                print(f"T:{T-273}°C | P:{P/101325} atm | eps: {epsilon}")
-                print(fuga_m)
+                #print(f"T:{T-273}°C | P:{P/101325} atm | eps: {epsilon}")
+                #print(fuga_m)
                 x_guess = y
 
             # array allocation of pressure(j)-temperature(i) dependent variables
@@ -143,7 +143,7 @@ def model(Temperature, Pressure, species):
 
             filename = f'results_{int(T - 273)}C_' + P_str + 'atm'
             # cd = os.chdir('')
-            path = '/output/thermo parameters/'
+            path = '\\output\\thermo parameters\\'
 
             filename = path + filename + '.txt'
 
@@ -188,7 +188,7 @@ def model(Temperature, Pressure, species):
 
             filename = f'xy_{int(T - 273)}C_' + P_str + 'atm'
             # cd = os.chdir('')
-            path = '/output/compositions/txt/'
+            path = '\\output\\compositions\\txt\\'
 
             filename = path + filename + '.txt'
 
@@ -228,6 +228,8 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, alpha_TP[2], marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, alpha_TP[3], marker='D', markersize=ms, linewidth=lw, label=labels[3])
     axes.set_xlabel(Temp_label)
+    axes.xaxis.set_ticks(np.linspace(Temperature[0], Temperature[-1], len(Temperature)), endpoint=True)
+    axes.yaxis.set_ticks(np.linspace(0.003, 0.02, len(Temperature)+1), endpoint=True)
     axes.set_ylabel(r"$\mathrm{\gamma\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(0.003, 0.02)
@@ -235,7 +237,7 @@ def model(Temperature, Pressure, species):
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
     #axes.legend(loc='best')
 
-    path_for_figures = '/output/VLE figures/'
+    path_for_figures = '\\output\\VLE figures\\'
     file = 'alpha_TP_plot.svg'
     filename = str(cwd) + path_for_figures + file
     fig.savefig(filename, dpi=dpi)
@@ -247,6 +249,8 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, Vap_TP[2], marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, Vap_TP[3], marker='D', markersize=ms, linewidth=lw, label=labels[3])
     axes.set_xlabel(Temp_label)
+    axes.xaxis.set_ticks(np.linspace(Temperature[0], Temperature[-1], len(Temperature)), endpoint=True)
+    axes.yaxis.set_ticks(np.linspace(0, max(Vap_TP[0]), len(Temperature)+1), endpoint=True)
     axes.set_ylabel(r"$\mathrm{Vapour\,flow\,[kmol/d]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(min(Vap_TP[len(Pressure)-1])/1.02, max(Vap_TP[0]))
@@ -261,6 +265,8 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, Liq_TP[1],  marker='^', markersize=ms, linewidth=lw, label=labels[1])
     axes.plot(Temperature, Liq_TP[2],  marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, Liq_TP[3],  marker='D', markersize=ms, linewidth=lw, label=labels[3])
+    axes.xaxis.set_ticks(np.linspace(Temperature[0], Temperature[-1], len(Temperature)), endpoint=True)
+    axes.yaxis.set_ticks(np.linspace(min(Liq_TP[0])-2, F, len(Temperature)+1), endpoint=True)
     axes.set_xlabel(Temp_label)
     axes.set_ylabel(r"$\mathrm{Liquid\,flow\,[kmol/d]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
@@ -279,6 +285,8 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, x_CH4[2],  marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, x_CH4[3],  marker='D', markersize=ms, linewidth=lw, label=labels[3])
     axes.set_xlabel(Temp_label)
+    axes.xaxis.set_ticks(np.linspace(Temperature[0], Temperature[-1], len(Temperature)), endpoint=True)
+    axes.yaxis.set_ticks(np.linspace(min(x_CH4[0]), max(x_CH4[len(Pressure)-1]), len(Temperature)+1), endpoint=True)
     axes.set_ylabel(r"$\mathrm{x_{CH_4}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(min(x_CH4[0]), max(x_CH4[len(Pressure)-1]))
@@ -295,6 +303,8 @@ def model(Temperature, Pressure, species):
     axes.plot(Temperature, x_CO2[2],  marker='s', markersize=ms, linewidth=lw, label=labels[2])
     axes.plot(Temperature, x_CO2[3],  marker='D', markersize=ms, linewidth=lw, label=labels[3])
     axes.set_xlabel(Temp_label)
+    axes.xaxis.set_ticks(np.linspace(Temperature[0], Temperature[-1], len(Temperature)), endpoint=True)
+    axes.yaxis.set_ticks(np.linspace(min(x_CO2[0]), max(x_CO2[len(Pressure)-1]), len(Temperature)+1), endpoint=True)
     axes.set_ylabel(r"$\mathrm{x_{CO_2}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
     axes.set_ylim(min(x_CO2[0]), max(x_CO2[len(Pressure)-1]))
@@ -314,6 +324,8 @@ def model(Temperature, Pressure, species):
     axes.set_xlabel(Temp_label)
     axes.set_ylabel(r"$\mathrm{x_{H_2S}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
+    axes.xaxis.set_ticks(np.linspace(Temperature[0], Temperature[-1], len(Temperature)), endpoint=True)
+    axes.yaxis.set_ticks(np.linspace(min(x_H2S[0]), max(x_H2S[len(Pressure)-1]), len(Temperature)+1), endpoint=True)
     axes.set_ylim(min(x_H2S[0]), max(x_H2S[len(Pressure)-1]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-4, 4))
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
@@ -330,8 +342,10 @@ def model(Temperature, Pressure, species):
     axes.set_xlabel(Temp_label)
     axes.set_ylabel(r"$\mathrm{x_{H_2O}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
+    axes.xaxis.set_ticks(np.linspace(Temperature[0], Temperature[-1], len(Temperature)), endpoint=True)
+    axes.yaxis.set_ticks(np.linspace(min(x_H2O[len(Pressure)-1]), 1, len(Temperature)+1), endpoint=True)
     axes.set_ylim(min(x_H2O[len(Pressure)-1]), 1)
-    axes.ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
+    axes.ticklabel_format(axis='y', style='sci', scilimits=(-4, -1))
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
 
     file = 'x_y_TP_xH2O_plot.svg'
@@ -346,6 +360,8 @@ def model(Temperature, Pressure, species):
     axes.set_xlabel(Temp_label)
     axes.set_ylabel(r"$\mathrm{y_{CH_4}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
+    axes.xaxis.set_ticks(np.linspace(Temperature[0], Temperature[-1], len(Temperature)), endpoint=True)
+    axes.yaxis.set_ticks(np.linspace(min(y_CH4[0]), max(y_CH4[len(Pressure)-1]), len(Temperature)+1), endpoint=True)
     axes.set_ylim(min(y_CH4[0]), max(y_CH4[len(Pressure)-1]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
@@ -362,6 +378,8 @@ def model(Temperature, Pressure, species):
     axes.set_xlabel(Temp_label)
     axes.set_ylabel(r"$\mathrm{y_{CO_2}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
+    axes.xaxis.set_ticks(np.linspace(Temperature[0], Temperature[-1], len(Temperature)), endpoint=True)
+    axes.yaxis.set_ticks(np.linspace(min(y_CO2[0]), max(y_CO2[len(Pressure)-1]), len(Temperature)+1), endpoint=True)
     axes.set_ylim(min(y_CO2[0]), max(y_CO2[len(Pressure)-1]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
@@ -378,6 +396,8 @@ def model(Temperature, Pressure, species):
     axes.set_xlabel(Temp_label)
     axes.set_ylabel(r"$\mathrm{y_{H_2S}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
+    axes.xaxis.set_ticks(np.linspace(Temperature[0], Temperature[-1], len(Temperature)), endpoint=True)
+    axes.yaxis.set_ticks(np.linspace(min(y_H2S[len(Pressure)-1]),max(y_H2S[0]), len(Temperature)+1), endpoint=True)
     axes.set_ylim(min(y_H2S[len(Pressure)-1]), max(y_H2S[0]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-2, 2))
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
@@ -394,6 +414,8 @@ def model(Temperature, Pressure, species):
     axes.set_xlabel(Temp_label)
     axes.set_ylabel(r"$\mathrm{y_{H_2O}\,[--]}$")
     axes.set_xlim(x_lim_min, x_lim_max)
+    axes.xaxis.set_ticks(np.linspace(Temperature[0], Temperature[-1], len(Temperature)), endpoint=True)
+    axes.yaxis.set_ticks(np.linspace(min(y_H2O[len(Pressure)-1]),max(y_H2O[0]), len(Temperature)+1), endpoint=True)
     axes.set_ylim(min(y_H2O[len(Pressure)-1]), max(y_H2O[0]))
     axes.ticklabel_format(axis='y', style='sci', scilimits=(-1, 1))
     axes.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)

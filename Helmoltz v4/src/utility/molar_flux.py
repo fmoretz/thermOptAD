@@ -43,7 +43,7 @@ D = {
     A[1]: [5.35*10**(-10)*(T[i]+273.15)/((water_viscosity(T[i]+273.15)**1.035)*10)*10**(-4) for i in range(len(T))], # Rinker & Sandall (1994)
     A[2]: [1.91*10**(-9)*(T[i]+273.15)/((water_viscosity(T[i]+273.15)**0.74)*10)*10**(-4)   for i in range(len(T))]  # Halmour & Sandall (1984)
 } # m2/s
-
+print(D)
 # saturation pressure of species (atm)
 psat = {
     A[0]: [Antoine(Ant[A[0]], T[i]+273.15) for i in range(len(T))],

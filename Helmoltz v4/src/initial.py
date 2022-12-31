@@ -2,7 +2,7 @@ import pandas as pd
 from pathlib import Path
 
 cwd = str(Path.cwd())
-file_path = cwd + '/input/input_parameters.xlsx'
+file_path = cwd + '\\input\\input_parameters.xlsx'
 
 initial_composition_array = pd.read_excel(file_path, header=None)
 

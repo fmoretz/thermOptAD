@@ -25,7 +25,7 @@ mole_day(
     Pres_atm  = Pressure,
     Height   = L,
     Diameter = d,
-    showbool=False
+    showbool=True
     )
 t2 = time.time()
 

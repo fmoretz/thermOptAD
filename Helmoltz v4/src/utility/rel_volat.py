@@ -45,28 +45,31 @@ dPsat = {
 }
 
 dpi = 300
-plt.figure(dpi=dpi)
-plt.plot(Temperature, rel_vol['CH4'], linewidth=1, label='CH$_4$')
-plt.plot(Temperature, rel_vol['CO2'], linewidth=1, label='CO$_2$')
-plt.plot(Temperature, rel_vol['H2S'], linewidth=1, label='H$_2$S')
-plt.xlabel('T [°C]')
-plt.ylabel('relative volatility [--]')
+fig, ax = plt.subplots(dpi=dpi)
+ax.plot(Temperature, rel_vol['CH4'], linewidth=1, label='CH$_4$')
+ax.plot(Temperature, rel_vol['CO2'], linewidth=1, label='CO$_2$')
+ax.plot(Temperature, rel_vol['H2S'], linewidth=1, label='H$_2$S')
+ax.xaxis.set_ticks(np.linspace(Temperature[0], Temperature[-1], len(Temperature)+3), endpoint=True)
+#et_ticks(np.linspace(min(y_H2S[len(Pressure)-1]),max(y_H2S[0]), len(Temperature)+1), endpoint=True)
+ax.set_xlabel('T [°C]')
+ax.set_ylabel('relative volatility [--]')
 #plt.legend()
-plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+ax.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
 filename = 'volatility.png'
-plt.savefig(filename, dpi = dpi)
+fig.savefig(filename, dpi = dpi)
 
-plt.figure(dpi=dpi)
-plt.plot(Temperature, dPsat['CH4']/np.max(dPsat['CH4']), linewidth=1, label='CH$_4$')
-plt.plot(Temperature, dPsat['CO2']/np.max(dPsat['CO2']), linewidth=1, label='CO$_2$')
-plt.plot(Temperature, dPsat['H2S']/np.max(dPsat['H2S']), linewidth=1, label='H$_2$S')
-plt.plot(Temperature, dPsat['H2O']/np.max(dPsat['H2O']), linewidth=1, label='H$_2$O')
-plt.xlabel('T [°C]')
-plt.ylabel('Rate of change [Pa/°C]')
+fig, ax = plt.subplots(dpi=dpi)
+ax.plot(Temperature, dPsat['CH4']/np.max(dPsat['CH4']), linewidth=1, label='CH$_4$')
+ax.plot(Temperature, dPsat['CO2']/np.max(dPsat['CO2']), linewidth=1, label='CO$_2$')
+ax.plot(Temperature, dPsat['H2S']/np.max(dPsat['H2S']), linewidth=1, label='H$_2$S')
+ax.plot(Temperature, dPsat['H2O']/np.max(dPsat['H2O']), linewidth=1, label='H$_2$O')
+ax.set_xlabel('T [°C]')
+ax.xaxis.set_ticks(np.linspace(Temperature[0], Temperature[-1], len(Temperature)+3), endpoint=True)
+ax.set_ylabel('Rate of change [Pa/°C]')
 #plt.legend()
-plt.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
+ax.grid(color='k', alpha=0.2, linestyle='dashed', linewidth=0.5)
 
 filename = 'rate_of_change.png'
-plt.savefig(filename, dpi = dpi)
+fig.savefig(filename, dpi = dpi)
 
 plt.show()
